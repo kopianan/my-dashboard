@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/auth_local_datasource.dart';
-import 'package:dynamic_dashboard/infrastructure/models/user_model.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_local_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
 
 @LazySingleton(as: AuthLocalDataSource)
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {

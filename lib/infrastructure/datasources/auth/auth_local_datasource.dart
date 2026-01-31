@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:dynamic_dashboard/infrastructure/models/user_model.dart';
+import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
 
 abstract class AuthLocalDataSource {
   Future<Either<String, void>> saveAuthToken(String token);

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/auth_remote_datasource.dart';
-import 'package:dynamic_dashboard/infrastructure/models/user_model.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_remote_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
 
 @LazySingleton(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {

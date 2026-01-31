@@ -10,17 +10,29 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
+import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import 'application/auth/auth_cubit.dart' as _i457;
+import 'application/dashboard_action/dashboard_action_cubit.dart' as _i872;
+import 'application/weather/weather_cubit.dart' as _i197;
 import 'domain/repositories/auth_repository.dart' as _i716;
-import 'infrastructure/datasources/auth_local_datasource.dart' as _i602;
-import 'infrastructure/datasources/auth_local_datasource_impl.dart' as _i797;
-import 'infrastructure/datasources/auth_remote_datasource.dart' as _i923;
-import 'infrastructure/datasources/auth_remote_datasource_impl.dart' as _i129;
+import 'domain/repositories/weather_repository.dart' as _i690;
+import 'infrastructure/datasources/auth/auth_local_datasource.dart' as _i190;
+import 'infrastructure/datasources/auth/auth_local_datasource_impl.dart'
+    as _i971;
+import 'infrastructure/datasources/auth/auth_remote_datasource.dart' as _i708;
+import 'infrastructure/datasources/auth/auth_remote_datasource_impl.dart'
+    as _i514;
+import 'infrastructure/datasources/weather/weather_remote_datasource.dart'
+    as _i887;
+import 'infrastructure/datasources/weather/weather_remote_datasource_impl.dart'
+    as _i61;
+import 'infrastructure/modules/http_module.dart' as _i326;
 import 'infrastructure/modules/shared_preferences_module.dart' as _i1038;
 import 'infrastructure/repositories/auth_repository_impl.dart' as _i933;
+import 'infrastructure/repositories/weather_repository_impl.dart' as _i517;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -30,20 +42,32 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final sharedPreferencesModule = _$SharedPreferencesModule();
+    final httpModule = _$HttpModule();
+    gh.factory<_i872.DashboardActionCubit>(() => _i872.DashboardActionCubit());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => sharedPreferencesModule.sharedPreferences,
       preResolve: true,
     );
-    gh.lazySingleton<_i923.AuthRemoteDataSource>(
-      () => _i129.AuthRemoteDataSourceImpl(),
+    gh.lazySingleton<_i519.Client>(() => httpModule.client);
+    gh.lazySingleton<_i708.AuthRemoteDataSource>(
+      () => _i514.AuthRemoteDataSourceImpl(),
     );
-    gh.lazySingleton<_i602.AuthLocalDataSource>(
-      () => _i797.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
+    gh.lazySingleton<_i190.AuthLocalDataSource>(
+      () => _i971.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i887.WeatherRemoteDataSource>(
+      () => _i61.WeatherRemoteDataSourceImpl(gh<_i519.Client>()),
+    );
+    gh.factory<_i690.WeatherRepository>(
+      () => _i517.WeatherRepositoryImpl(gh<_i887.WeatherRemoteDataSource>()),
+    );
+    gh.factory<_i197.WeatherCubit>(
+      () => _i197.WeatherCubit(gh<_i690.WeatherRepository>()),
     );
     gh.lazySingleton<_i716.AuthRepository>(
       () => _i933.AuthRepositoryImpl(
-        gh<_i923.AuthRemoteDataSource>(),
-        gh<_i602.AuthLocalDataSource>(),
+        gh<_i708.AuthRemoteDataSource>(),
+        gh<_i190.AuthLocalDataSource>(),
       ),
     );
     gh.lazySingleton<_i457.AuthCubit>(
@@ -54,3 +78,5 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$SharedPreferencesModule extends _i1038.SharedPreferencesModule {}
+
+class _$HttpModule extends _i326.HttpModule {}

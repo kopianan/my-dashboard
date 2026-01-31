@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:dynamic_dashboard/infrastructure/models/user_model.dart';
+import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<Either<String, UserModel>> login({

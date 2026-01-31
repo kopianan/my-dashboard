@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dynamic_dashboard/domain/entities/user.dart';
 import 'package:dynamic_dashboard/domain/repositories/auth_repository.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/auth_remote_datasource.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/auth_local_datasource.dart';
-import 'package:dynamic_dashboard/infrastructure/models/user_model.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_remote_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_local_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
