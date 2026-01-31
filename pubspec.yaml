@@ -20,6 +20,7 @@ dependencies:
   json_annotation: ^4.10.0
   reorderable_grid: ^1.0.13
   shared_preferences: ^2.2.3
+  skeletonizer: ^2.1.2
   url_launcher: ^6.3.2
   web_socket_channel: ^3.0.1
 
@@ -35,8 +36,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/icon/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

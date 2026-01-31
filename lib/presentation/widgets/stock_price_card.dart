@@ -14,7 +14,7 @@ class StockPriceCard extends StatefulWidget {
   State<StockPriceCard> createState() => _StockPriceCardState();
 }
 
-class _StockPriceCardState extends State<StockPriceCard> 
+class _StockPriceCardState extends State<StockPriceCard>
     with WidgetsBindingObserver {
   StockPriceCubit? _cubit;
   bool _isInBackground = false;
@@ -40,12 +40,15 @@ class _StockPriceCardState extends State<StockPriceCard>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    
+
     switch (state) {
       case AppLifecycleState.resumed:
         // App came to foreground
         if (_isInBackground && _cubit != null) {
-          developer.log('App resumed, resuming WebSocket', name: 'StockPriceCard');
+          developer.log(
+            'App resumed, resuming WebSocket',
+            name: 'StockPriceCard',
+          );
           _cubit!.resumeListening();
           _isInBackground = false;
         }
@@ -54,7 +57,10 @@ class _StockPriceCardState extends State<StockPriceCard>
       case AppLifecycleState.inactive:
         // App going to background
         if (!_isInBackground && _cubit != null) {
-          developer.log('App paused/inactive, pausing WebSocket', name: 'StockPriceCard');
+          developer.log(
+            'App paused/inactive, pausing WebSocket',
+            name: 'StockPriceCard',
+          );
           _cubit!.pauseListening();
           _isInBackground = true;
         }
@@ -76,9 +82,7 @@ class _StockPriceCardState extends State<StockPriceCard>
         margin: const EdgeInsets.all(16),
         child: const Padding(
           padding: EdgeInsets.all(20),
-          child: Center(
-            child: Text('Initializing stock price service...'),
-          ),
+          child: Center(child: Text('Initializing stock price service...')),
         ),
       );
     }
@@ -94,9 +98,14 @@ class _StockPriceCardState extends State<StockPriceCard>
               return state.when(
                 initial: () => _buildInitialState(),
                 connecting: () => _buildConnectingState(),
-                connected: (latestPrices, connectionState, subscribedSymbols) => 
-                    _buildConnectedState(context, latestPrices, subscribedSymbols),
-                error: (message, latestPrices) => _buildErrorState(message, context, latestPrices),
+                connected: (latestPrices, connectionState, subscribedSymbols) =>
+                    _buildConnectedState(
+                      context,
+                      latestPrices,
+                      subscribedSymbols,
+                    ),
+                error: (message, latestPrices) =>
+                    _buildErrorState(message, context, latestPrices),
               );
             },
           ),
@@ -109,26 +118,16 @@ class _StockPriceCardState extends State<StockPriceCard>
     return const Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          Icons.show_chart,
-          size: 64,
-          color: Colors.grey,
-        ),
+        Icon(Icons.show_chart, size: 64, color: Colors.grey),
         SizedBox(height: 16),
         Text(
           'Stock Prices',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8),
         Text(
           'Initializing...',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ],
     );
@@ -142,16 +141,17 @@ class _StockPriceCardState extends State<StockPriceCard>
         SizedBox(height: 16),
         Text(
           'Connecting to market data...',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ],
     );
   }
 
-  Widget _buildConnectedState(BuildContext context, Map<String, StockTrade> latestPrices, Set<String> subscribedSymbols) {
+  Widget _buildConnectedState(
+    BuildContext context,
+    Map<String, StockTrade> latestPrices,
+    Set<String> subscribedSymbols,
+  ) {
     final cubit = context.read<StockPriceCubit>();
     final sortedSymbols = cubit.getSortedSymbols();
     final marketSummary = cubit.getMarketSummary();
@@ -160,18 +160,11 @@ class _StockPriceCardState extends State<StockPriceCard>
       return const Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.hourglass_empty,
-            size: 64,
-            color: Colors.orange,
-          ),
+          Icon(Icons.hourglass_empty, size: 64, color: Colors.orange),
           SizedBox(height: 16),
           Text(
             'Waiting for market data...',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
         ],
       );
@@ -184,48 +177,39 @@ class _StockPriceCardState extends State<StockPriceCard>
         // Header with market summary
         Row(
           children: [
-            const Icon(
-              Icons.trending_up,
-              size: 32,
-              color: Colors.green,
-            ),
+            const Icon(Icons.trending_up, size: 32, color: Colors.green),
             const SizedBox(width: 12),
             const Text(
               'Live Market',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
                   '📈 ${marketSummary.gainers} 📉 ${marketSummary.losers}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
                   '${marketSummary.totalSymbols} symbols',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
             ),
           ],
         ),
         const SizedBox(height: 16),
-        
+
         // Stock prices list
-        ...sortedSymbols.take(4).map((symbol) => _buildStockItem(cubit, symbol)).toList(),
-        
+        ...sortedSymbols
+            .take(4)
+            .map((symbol) => _buildStockItem(cubit, symbol))
+            .toList(),
+
         const SizedBox(height: 12),
-        
+
         // Connection status
         Row(
           children: [
@@ -249,10 +233,7 @@ class _StockPriceCardState extends State<StockPriceCard>
             const Spacer(),
             Text(
               'Updated now',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
             ),
           ],
         ),
@@ -266,7 +247,9 @@ class _StockPriceCardState extends State<StockPriceCard>
 
     final priceChange = cubit.getPriceChange(symbol);
     final formattedPrice = cubit.getFormattedPrice(symbol);
-    final displayName = cubit.getFormattedPrice(symbol); // This should be display name
+    final displayName = cubit.getFormattedPrice(
+      symbol,
+    ); // This should be display name
     final icon = _getSymbolIcon(symbol);
 
     return Container(
@@ -278,7 +261,7 @@ class _StockPriceCardState extends State<StockPriceCard>
         color: Colors.grey.shade50,
       ),
       child: Row(
-        children: [
+        children: [ 
           // Symbol icon
           Container(
             width: 40,
@@ -287,15 +270,25 @@ class _StockPriceCardState extends State<StockPriceCard>
               color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Center(
-              child: Text(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
                 icon,
-                style: const TextStyle(fontSize: 20),
+                width: 32,
+                height: 32,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.currency_exchange,
+                    size: 20,
+                    color: Colors.grey,
+                  );
+                },
               ),
             ),
           ),
           const SizedBox(width: 12),
-          
+
           // Symbol info
           Expanded(
             child: Column(
@@ -310,15 +303,12 @@ class _StockPriceCardState extends State<StockPriceCard>
                 ),
                 Text(
                   symbol,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
             ),
           ),
-          
+
           // Price and change
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -345,15 +335,15 @@ class _StockPriceCardState extends State<StockPriceCard>
     );
   }
 
-  Widget _buildErrorState(String message, BuildContext context, Map<String, StockTrade>? latestPrices) {
+  Widget _buildErrorState(
+    String message,
+    BuildContext context,
+    Map<String, StockTrade>? latestPrices,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          Icons.error_outline,
-          size: 64,
-          color: Colors.red,
-        ),
+        const Icon(Icons.error_outline, size: 64, color: Colors.red),
         const SizedBox(height: 16),
         const Text(
           'Market Data Unavailable',
@@ -366,10 +356,7 @@ class _StockPriceCardState extends State<StockPriceCard>
         const SizedBox(height: 8),
         Text(
           message,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
@@ -379,7 +366,7 @@ class _StockPriceCardState extends State<StockPriceCard>
           },
           child: const Text('Retry Connection'),
         ),
-        
+
         // Show last known data if available
         if (latestPrices != null && latestPrices.isNotEmpty) ...[
           const SizedBox(height: 16),
@@ -419,19 +406,19 @@ class _StockPriceCardState extends State<StockPriceCard>
 
   String _getSymbolIcon(String symbol) {
     const iconMap = {
-      'BTCUSDT': '₿',
-      'ETHUSDT': 'Ξ',
-      'SOLBTC': '🟣',
-      'XRPUSDT': '💧',
+      'BTCUSDT': 'assets/icon/bitcoin.png',
+      'ETHUSDT': 'assets/icon/ethereum.png', 
+      'SOLUSDT': 'assets/icon/solana.png',
+      'XRPUSDT': 'assets/icon/xrp.png',
     };
-    return iconMap[symbol] ?? '📈';
+    return iconMap[symbol] ?? 'assets/icon/default.png';
   }
 
   String _getSymbolDisplayName(String symbol) {
     const nameMap = {
       'BTCUSDT': 'Bitcoin',
       'ETHUSDT': 'Ethereum',
-      'SOLBTC': 'Solana',
+      'SOLUSDT': 'Solana',
       'XRPUSDT': 'Ripple',
     };
     return nameMap[symbol] ?? symbol;

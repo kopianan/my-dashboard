@@ -20,7 +20,7 @@ class WeatherCard extends StatelessWidget {
               return state.when(
                 initial: () => _buildInitialState(),
                 loading: () => _buildLoadingState(),
-                loaded: (weather) => _buildLoadedState(weather),
+                loaded: (weather) => _buildLoadedState(weather, context),
                 error: (message) => _buildErrorState(message, context),
               );
             },
@@ -47,20 +47,113 @@ class WeatherCard extends StatelessWidget {
   }
 
   Widget _buildLoadingState() {
-    return const Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CircularProgressIndicator(),
-        SizedBox(height: 16),
-        Text(
-          'Loading Weather...',
-          style: TextStyle(fontSize: 18, color: Colors.grey),
+        // Main row skeleton (icon, city, temperature)
+        Row(
+          children: [
+            // Skeleton icon
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Skeleton city name
+                  Container(
+                    height: 20,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  // Skeleton description
+                  Container(
+                    height: 12,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Skeleton temperature
+            Container(
+              height: 36,
+              width: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        // Skeleton for bottom row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                Container(
+                  height: 12,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  height: 16,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 12,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  height: 16,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ],
     );
   }
 
-  Widget _buildLoadedState(Weather weather) {
+  Widget _buildLoadedState(Weather weather, BuildContext context) {
     final temp = (weather.main.temp - 273.15)
         .round(); // Convert from Kelvin to Celsius
     final weatherInfo = weather.weather.isNotEmpty ? weather.weather[0] : null;
@@ -70,25 +163,35 @@ class WeatherCard extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          _getWeatherIcon(weatherInfo?.main),
-          size: 64,
-          color: _getWeatherColor(weatherInfo?.main),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          weather.name,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '${temp}°C',
-          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w300),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          description.toUpperCase(),
-          style: const TextStyle(fontSize: 18, color: Colors.grey),
+        // Icon, City name, and Temperature in one row
+        Row(
+          children: [
+            Icon(
+              _getWeatherIcon(weatherInfo?.main),
+              size: 48,
+              color: _getWeatherColor(weatherInfo?.main),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    weather.name,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    description.toUpperCase(),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              '${temp}°C',
+              style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w300),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         Row(

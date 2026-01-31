@@ -22,7 +22,7 @@ class NewsCard extends StatelessWidget {
               return state.when(
                 initial: () => _buildInitialState(),
                 loading: () => _buildLoadingState(),
-                loaded: (newsResponse) => _buildLoadedState(newsResponse),
+                loaded: (newsResponse) => _buildLoadedState(newsResponse, context),
                 error: (message) => _buildErrorState(message, context),
               );
             },
@@ -65,7 +65,7 @@ class NewsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadedState(NewsResponse newsResponse) {
+  Widget _buildLoadedState(NewsResponse newsResponse, BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
