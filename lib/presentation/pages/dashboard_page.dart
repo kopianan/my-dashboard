@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_dashboard/presentation/widgets/weather_card.dart';
 import 'package:dynamic_dashboard/presentation/widgets/news_card.dart';
+import 'package:dynamic_dashboard/presentation/widgets/stock_price_card.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -30,8 +31,10 @@ class _DashboardPageState extends State<DashboardPage> {
             // News Card
             NewsCard(),
 
-            // TODO: Add Stock Price Ticker Card here later
-            // StockPriceCard(),
+            SizedBox(height: 16),
+
+            // Stock Price Card
+            StockPriceCard(),
           ],
         ),
       ),
