@@ -16,8 +16,10 @@ import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import 'application/auth/auth_cubit.dart' as _i457;
 import 'application/dashboard_action/dashboard_action_cubit.dart' as _i872;
+import 'application/news/news_cubit.dart' as _i40;
 import 'application/weather/weather_cubit.dart' as _i197;
 import 'domain/repositories/auth_repository.dart' as _i716;
+import 'domain/repositories/news_repository.dart' as _i983;
 import 'domain/repositories/weather_repository.dart' as _i690;
 import 'infrastructure/datasources/auth/auth_local_datasource.dart' as _i190;
 import 'infrastructure/datasources/auth/auth_local_datasource_impl.dart'
@@ -25,6 +27,9 @@ import 'infrastructure/datasources/auth/auth_local_datasource_impl.dart'
 import 'infrastructure/datasources/auth/auth_remote_datasource.dart' as _i708;
 import 'infrastructure/datasources/auth/auth_remote_datasource_impl.dart'
     as _i514;
+import 'infrastructure/datasources/news/news_remote_datasource.dart' as _i822;
+import 'infrastructure/datasources/news/news_remote_datasource_impl.dart'
+    as _i537;
 import 'infrastructure/datasources/weather/weather_remote_datasource.dart'
     as _i887;
 import 'infrastructure/datasources/weather/weather_remote_datasource_impl.dart'
@@ -32,6 +37,7 @@ import 'infrastructure/datasources/weather/weather_remote_datasource_impl.dart'
 import 'infrastructure/modules/http_module.dart' as _i326;
 import 'infrastructure/modules/shared_preferences_module.dart' as _i1038;
 import 'infrastructure/repositories/auth_repository_impl.dart' as _i933;
+import 'infrastructure/repositories/news_repository_impl.dart' as _i0;
 import 'infrastructure/repositories/weather_repository_impl.dart' as _i517;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -55,6 +61,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i190.AuthLocalDataSource>(
       () => _i971.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
     );
+    gh.factory<_i822.NewsRemoteDataSource>(
+      () => _i537.NewsRemoteDataSourceImpl(gh<_i519.Client>()),
+    );
     gh.factory<_i887.WeatherRemoteDataSource>(
       () => _i61.WeatherRemoteDataSourceImpl(gh<_i519.Client>()),
     );
@@ -72,6 +81,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i457.AuthCubit>(
       () => _i457.AuthCubit(gh<_i716.AuthRepository>()),
+    );
+    gh.factory<_i983.NewsRepository>(
+      () => _i0.NewsRepositoryImpl(gh<_i822.NewsRemoteDataSource>()),
+    );
+    gh.factory<_i40.NewsCubit>(
+      () => _i40.NewsCubit(gh<_i983.NewsRepository>()),
     );
     return this;
   }

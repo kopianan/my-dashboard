@@ -20,6 +20,7 @@ dependencies:
   json_annotation: ^4.10.0
   reorderable_grid: ^1.0.13
   shared_preferences: ^2.2.3
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   build_runner: ^2.10.5

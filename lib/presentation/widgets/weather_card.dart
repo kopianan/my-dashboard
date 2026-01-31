@@ -1,3 +1,4 @@
+import 'package:dynamic_dashboard/domain/entities/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
@@ -33,27 +34,14 @@ class WeatherCard extends StatelessWidget {
     return const Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          Icons.wb_sunny,
-          size: 64,
-          color: Colors.grey,
-        ),
+        Icon(Icons.wb_sunny, size: 64, color: Colors.grey),
         SizedBox(height: 16),
         Text(
           'Weather',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8),
-        Text(
-          'Tap to load',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.grey,
-          ),
-        ),
+        Text('Tap to load', style: TextStyle(fontSize: 18, color: Colors.grey)),
       ],
     );
   }
@@ -66,21 +54,19 @@ class WeatherCard extends StatelessWidget {
         SizedBox(height: 16),
         Text(
           'Loading Weather...',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 18, color: Colors.grey),
         ),
       ],
     );
   }
 
-  Widget _buildLoadedState(weather) {
-    final temp = (weather.main.temp - 273.15).round(); // Convert from Kelvin to Celsius
+  Widget _buildLoadedState(Weather weather) {
+    final temp = (weather.main.temp - 273.15)
+        .round(); // Convert from Kelvin to Celsius
     final weatherInfo = weather.weather.isNotEmpty ? weather.weather[0] : null;
     final description = weatherInfo?.description ?? 'Unknown';
     final main = weatherInfo?.main ?? 'Weather';
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -92,26 +78,17 @@ class WeatherCard extends StatelessWidget {
         const SizedBox(height: 16),
         Text(
           weather.name,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
           '${temp}°C',
-          style: const TextStyle(
-            fontSize: 48,
-            fontWeight: FontWeight.w300,
-          ),
+          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w300),
         ),
         const SizedBox(height: 8),
         Text(
           description.toUpperCase(),
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.grey,
-          ),
+          style: const TextStyle(fontSize: 18, color: Colors.grey),
         ),
         const SizedBox(height: 16),
         Row(
@@ -121,10 +98,7 @@ class WeatherCard extends StatelessWidget {
               children: [
                 const Text(
                   'Feels like',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
                   '${(weather.main.feelsLike - 273.15).round()}°C',
@@ -139,10 +113,7 @@ class WeatherCard extends StatelessWidget {
               children: [
                 const Text(
                   'Humidity',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
                   '${weather.main.humidity}%',
@@ -163,26 +134,16 @@ class WeatherCard extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          Icons.error_outline,
-          size: 64,
-          color: Colors.red,
-        ),
+        const Icon(Icons.error_outline, size: 64, color: Colors.red),
         const SizedBox(height: 16),
         const Text(
           'Weather Error',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
           message,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.red,
-          ),
+          style: const TextStyle(fontSize: 16, color: Colors.red),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),

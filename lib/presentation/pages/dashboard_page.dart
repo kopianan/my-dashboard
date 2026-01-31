@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_dashboard/presentation/widgets/weather_card.dart';
+import 'package:dynamic_dashboard/presentation/widgets/news_card.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -24,8 +25,10 @@ class _DashboardPageState extends State<DashboardPage> {
             // Weather Card
             WeatherCard(),
 
-            // TODO: Add News Card here later
-            // NewsCard(),
+            SizedBox(height: 16),
+
+            // News Card
+            NewsCard(),
 
             // TODO: Add Stock Price Ticker Card here later
             // StockPriceCard(),
