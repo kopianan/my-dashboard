@@ -15,11 +15,12 @@ part 'stock_price_cubit.freezed.dart';
 class StockPriceCubit extends Cubit<StockPriceState> {
   final StockPriceRepository _repository;
   final StockPriceDataProvider _dataProvider;
-  
+
   StreamSubscription? _priceStreamSubscription;
   StreamSubscription? _connectionStreamSubscription;
-  
-  StockPriceCubit(this._repository, this._dataProvider) : super(const StockPriceState.initial());
+
+  StockPriceCubit(this._repository, this._dataProvider)
+    : super(const StockPriceState.initial());
 
   /// Start listening to real-time stock price updates
   Future<void> startListening() async {
@@ -29,19 +30,27 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     }
 
     emit(const StockPriceState.connecting());
-    
+
     final result = await _repository.startListening();
-    
+
     result.fold(
       (error) {
-        developer.log('Failed to start listening: $error', name: 'StockPriceCubit');
-        emit(StockPriceState.error(
-          message: error,
-          latestPrices: _dataProvider.getAllLatestPrices(),
-        ));
+        developer.log(
+          'Failed to start listening: $error',
+          name: 'StockPriceCubit',
+        );
+        emit(
+          StockPriceState.error(
+            message: error,
+            latestPrices: _dataProvider.getAllLatestPrices(),
+          ),
+        );
       },
       (_) {
-        developer.log('Started listening successfully', name: 'StockPriceCubit');
+        developer.log(
+          'Started listening successfully',
+          name: 'StockPriceCubit',
+        );
         _subscribeToStreams();
         _emitConnectedState();
       },
@@ -51,19 +60,25 @@ class StockPriceCubit extends Cubit<StockPriceState> {
   /// Stop listening to stock price updates
   Future<void> stopListening() async {
     developer.log('Stopping stock price listening', name: 'StockPriceCubit');
-    
+
     await _unsubscribeFromStreams();
-    
+
     final result = await _repository.stopListening();
     result.fold(
       (error) {
-        developer.log('Error stopping listening: $error', name: 'StockPriceCubit');
+        developer.log(
+          'Error stopping listening: $error',
+          name: 'StockPriceCubit',
+        );
         emit(StockPriceState.error(message: error));
       },
       (_) {
         _dataProvider.clearData();
         emit(const StockPriceState.initial());
-        developer.log('Stopped listening successfully', name: 'StockPriceCubit');
+        developer.log(
+          'Stopped listening successfully',
+          name: 'StockPriceCubit',
+        );
       },
     );
   }
@@ -73,14 +88,22 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     final result = await _repository.subscribeToSymbol(symbol);
     result.fold(
       (error) {
-        developer.log('Failed to subscribe to $symbol: $error', name: 'StockPriceCubit');
-        emit(StockPriceState.error(
-          message: 'Failed to subscribe to $symbol: $error',
-          latestPrices: _dataProvider.getAllLatestPrices(),
-        ));
+        developer.log(
+          'Failed to subscribe to $symbol: $error',
+          name: 'StockPriceCubit',
+        );
+        emit(
+          StockPriceState.error(
+            message: 'Failed to subscribe to $symbol: $error',
+            latestPrices: _dataProvider.getAllLatestPrices(),
+          ),
+        );
       },
       (_) {
-        developer.log('Successfully subscribed to $symbol', name: 'StockPriceCubit');
+        developer.log(
+          'Successfully subscribed to $symbol',
+          name: 'StockPriceCubit',
+        );
         _emitConnectedState();
       },
     );
@@ -91,14 +114,22 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     final result = await _repository.subscribeToSymbols(symbols);
     result.fold(
       (error) {
-        developer.log('Failed to subscribe to symbols: $error', name: 'StockPriceCubit');
-        emit(StockPriceState.error(
-          message: 'Failed to subscribe to symbols: $error',
-          latestPrices: _dataProvider.getAllLatestPrices(),
-        ));
+        developer.log(
+          'Failed to subscribe to symbols: $error',
+          name: 'StockPriceCubit',
+        );
+        emit(
+          StockPriceState.error(
+            message: 'Failed to subscribe to symbols: $error',
+            latestPrices: _dataProvider.getAllLatestPrices(),
+          ),
+        );
       },
       (_) {
-        developer.log('Successfully subscribed to ${symbols.length} symbols', name: 'StockPriceCubit');
+        developer.log(
+          'Successfully subscribed to ${symbols.length} symbols',
+          name: 'StockPriceCubit',
+        );
         _emitConnectedState();
       },
     );
@@ -109,15 +140,23 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     final result = await _repository.unsubscribeFromSymbol(symbol);
     result.fold(
       (error) {
-        developer.log('Failed to unsubscribe from $symbol: $error', name: 'StockPriceCubit');
-        emit(StockPriceState.error(
-          message: 'Failed to unsubscribe from $symbol: $error',
-          latestPrices: _dataProvider.getAllLatestPrices(),
-        ));
+        developer.log(
+          'Failed to unsubscribe from $symbol: $error',
+          name: 'StockPriceCubit',
+        );
+        emit(
+          StockPriceState.error(
+            message: 'Failed to unsubscribe from $symbol: $error',
+            latestPrices: _dataProvider.getAllLatestPrices(),
+          ),
+        );
       },
       (_) {
         _dataProvider.clearSymbolData(symbol);
-        developer.log('Successfully unsubscribed from $symbol', name: 'StockPriceCubit');
+        developer.log(
+          'Successfully unsubscribed from $symbol',
+          name: 'StockPriceCubit',
+        );
         _emitConnectedState();
       },
     );
@@ -169,11 +208,16 @@ class StockPriceCubit extends Cubit<StockPriceState> {
       (either) {
         either.fold(
           (error) {
-            developer.log('Price stream error: $error', name: 'StockPriceCubit');
-            emit(StockPriceState.error(
-              message: error,
-              latestPrices: _dataProvider.getAllLatestPrices(),
-            ));
+            developer.log(
+              'Price stream error: $error',
+              name: 'StockPriceCubit',
+            );
+            emit(
+              StockPriceState.error(
+                message: error,
+                latestPrices: _dataProvider.getAllLatestPrices(),
+              ),
+            );
           },
           (stockPriceResponse) {
             _dataProvider.processStockPriceResponse(stockPriceResponse);
@@ -182,44 +226,54 @@ class StockPriceCubit extends Cubit<StockPriceState> {
         );
       },
       onError: (error) {
-        developer.log('Price stream subscription error: $error', name: 'StockPriceCubit');
-        emit(StockPriceState.error(
-          message: 'Connection error: $error',
-          latestPrices: _dataProvider.getAllLatestPrices(),
-        ));
+        developer.log(
+          'Price stream subscription error: $error',
+          name: 'StockPriceCubit',
+        );
+        emit(
+          StockPriceState.error(
+            message: 'Connection error: $error',
+            latestPrices: _dataProvider.getAllLatestPrices(),
+          ),
+        );
       },
     );
 
     // Listen to connection state changes
-    _connectionStreamSubscription = _repository.connectionStateStream.listen(
-      (connectionState) {
-        developer.log('Connection state changed: $connectionState', name: 'StockPriceCubit');
-        
-        switch (connectionState) {
-          case WebSocketConnectionState.connecting:
-            if (state is! _Connecting) {
-              emit(const StockPriceState.connecting());
-            }
-            break;
-          case WebSocketConnectionState.connected:
-            _emitConnectedState();
-            break;
-          case WebSocketConnectionState.disconnected:
-          case WebSocketConnectionState.error:
-            emit(StockPriceState.error(
+    _connectionStreamSubscription = _repository.connectionStateStream.listen((
+      connectionState,
+    ) {
+      developer.log(
+        'Connection state changed: $connectionState',
+        name: 'StockPriceCubit',
+      );
+
+      switch (connectionState) {
+        case WebSocketConnectionState.connecting:
+          if (state is! _Connecting) {
+            emit(const StockPriceState.connecting());
+          }
+          break;
+        case WebSocketConnectionState.connected:
+          _emitConnectedState();
+          break;
+        case WebSocketConnectionState.disconnected:
+        case WebSocketConnectionState.error:
+          emit(
+            StockPriceState.error(
               message: 'Connection ${connectionState.name}',
               latestPrices: _dataProvider.getAllLatestPrices(),
-            ));
-            break;
-          case WebSocketConnectionState.reconnecting:
-            // Keep current state but could show reconnecting indicator
-            break;
-          case WebSocketConnectionState.paused:
-            // Keep current state - paused state maintains data but stops processing
-            break;
-        }
-      },
-    );
+            ),
+          );
+          break;
+        case WebSocketConnectionState.reconnecting:
+          // Keep current state but could show reconnecting indicator
+          break;
+        case WebSocketConnectionState.paused:
+          // Keep current state - paused state maintains data but stops processing
+          break;
+      }
+    });
   }
 
   Future<void> _unsubscribeFromStreams() async {
@@ -231,11 +285,13 @@ class StockPriceCubit extends Cubit<StockPriceState> {
 
   void _emitConnectedState() {
     // Get current connection state from repository (if available)
-    emit(StockPriceState.connected(
-      latestPrices: _dataProvider.getAllLatestPrices(),
-      connectionState: WebSocketConnectionState.connected,
-      subscribedSymbols: _repository.subscribedSymbols,
-    ));
+    emit(
+      StockPriceState.connected(
+        latestPrices: _dataProvider.getAllLatestPrices(),
+        connectionState: WebSocketConnectionState.connected,
+        subscribedSymbols: _repository.subscribedSymbols,
+      ),
+    );
   }
 
   /// Pause stock price listening (for app lifecycle management)
@@ -243,20 +299,31 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     final result = await _repository.pauseListening();
     result.fold(
       (error) {
-        developer.log('Failed to pause listening: $error', name: 'StockPriceCubit');
-        emit(StockPriceState.error(
-          message: 'Failed to pause listening: $error',
-          latestPrices: _dataProvider.getAllLatestPrices(),
-        ));
+        developer.log(
+          'Failed to pause listening: $error',
+          name: 'StockPriceCubit',
+        );
+        emit(
+          StockPriceState.error(
+            message: 'Failed to pause listening: $error',
+            latestPrices: _dataProvider.getAllLatestPrices(),
+          ),
+        );
       },
       (_) {
-        developer.log('Successfully paused stock price listening', name: 'StockPriceCubit');
+        developer.log(
+          'Successfully paused stock price listening',
+          name: 'StockPriceCubit',
+        );
         // Keep current state data but indicate paused status if needed
-        emit(StockPriceState.connected(
-          latestPrices: _dataProvider.getAllLatestPrices(),
-          connectionState: WebSocketConnectionState.connected, // Could add paused state
-          subscribedSymbols: _repository.subscribedSymbols,
-        ));
+        emit(
+          StockPriceState.connected(
+            latestPrices: _dataProvider.getAllLatestPrices(),
+            connectionState:
+                WebSocketConnectionState.connected, // Could add paused state
+            subscribedSymbols: _repository.subscribedSymbols,
+          ),
+        );
       },
     );
   }
@@ -266,14 +333,22 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     final result = await _repository.resumeListening();
     result.fold(
       (error) {
-        developer.log('Failed to resume listening: $error', name: 'StockPriceCubit');
-        emit(StockPriceState.error(
-          message: 'Failed to resume listening: $error',
-          latestPrices: _dataProvider.getAllLatestPrices(),
-        ));
+        developer.log(
+          'Failed to resume listening: $error',
+          name: 'StockPriceCubit',
+        );
+        emit(
+          StockPriceState.error(
+            message: 'Failed to resume listening: $error',
+            latestPrices: _dataProvider.getAllLatestPrices(),
+          ),
+        );
       },
       (_) {
-        developer.log('Successfully resumed stock price listening', name: 'StockPriceCubit');
+        developer.log(
+          'Successfully resumed stock price listening',
+          name: 'StockPriceCubit',
+        );
         _emitConnectedState();
       },
     );
@@ -282,11 +357,11 @@ class StockPriceCubit extends Cubit<StockPriceState> {
   @override
   Future<void> close() async {
     developer.log('Closing StockPriceCubit', name: 'StockPriceCubit');
-    
+
     await _unsubscribeFromStreams();
     await stopListening();
     _repository.dispose();
-    
+
     return super.close();
   }
 }

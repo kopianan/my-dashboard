@@ -1,3 +1,4 @@
+import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
 import 'package:dynamic_dashboard/injection.dart';
 import 'package:dynamic_dashboard/core/router/app_router.dart';
 import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
@@ -16,8 +17,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<AuthCubit>()),
+        BlocProvider(
+          create: (context) => getIt<DashboardActionCubit>()..loadCardOrder(),
+        ),
+      ],
       child: MaterialApp.router(
         title: 'Dynamic Dashboard',
         theme: ThemeData(
@@ -29,4 +35,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

@@ -22,7 +22,8 @@ class _StockPriceCardState extends State<StockPriceCard>
   @override
   void initState() {
     super.initState();
-    _cubit = getIt<DashboardActionCubit>().state.stockPriceCubit;
+    final dashboardActionCubit = context.read<DashboardActionCubit>();
+    _cubit = dashboardActionCubit.state.stockPriceCubit;
     WidgetsBinding.instance.addObserver(this);
 
     // Start listening when widget is created
@@ -67,9 +68,11 @@ class _StockPriceCardState extends State<StockPriceCard>
         }
         break;
       case AppLifecycleState.detached:
+        // App is being terminated
         _cubit.stopListening();
         break;
       case AppLifecycleState.hidden:
+        // App is hidden (iOS 13+)
         break;
     }
   }
@@ -81,12 +84,13 @@ class _StockPriceCardState extends State<StockPriceCard>
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: BlocBuilder<StockPriceCubit, StockPriceState>(
             builder: (context, state) {
               return state.when(
-                initial: () => _buildInitialState(),
-                connecting: () => _buildConnectingState(),
+                initial: () => StockPriceSkeletonState(statusText: 'Loading'),
+                connecting: () =>
+                    StockPriceSkeletonState(statusText: 'Connecting'),
                 connected: (latestPrices, connectionState, subscribedSymbols) =>
                     _buildConnectedState(
                       context,
@@ -101,14 +105,6 @@ class _StockPriceCardState extends State<StockPriceCard>
         ),
       ),
     );
-  }
-
-  Widget _buildInitialState() {
-    return const StockPriceSkeletonState(statusText: 'Loading');
-  }
-
-  Widget _buildConnectingState() {
-    return const StockPriceSkeletonState(statusText: 'Connecting');
   }
 
   Widget _buildConnectedState(
@@ -158,39 +154,8 @@ class _StockPriceCardState extends State<StockPriceCard>
 
         // Stock prices list
         ...sortedSymbols
-            .take(4)
             .map((symbol) => _buildStockItem(cubit, symbol))
             .toList(),
-
-        const SizedBox(height: 12),
-
-        // Connection status
-        Row(
-          children: [
-            Container(
-              width: 8,
-              height: 8,
-              decoration: const BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
-              ),
-            ),
-            const SizedBox(width: 8),
-            const Text(
-              'Live',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.green,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const Spacer(),
-            Text(
-              'Updated now',
-              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -207,7 +172,7 @@ class _StockPriceCardState extends State<StockPriceCard>
     final icon = _getSymbolIcon(symbol);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade200),
@@ -316,7 +281,7 @@ class _StockPriceCardState extends State<StockPriceCard>
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            _cubit.startListening();
+            _cubit?.startListening();
           },
           child: const Text('Retry Connection'),
         ),

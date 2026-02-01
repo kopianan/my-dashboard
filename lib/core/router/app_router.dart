@@ -1,9 +1,10 @@
-import 'package:dynamic_dashboard/presentation/pages/dashboard_page.dart';
+import 'package:dynamic_dashboard/presentation/dashboard/dashboard_page.dart';
+import 'package:dynamic_dashboard/presentation/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dynamic_dashboard/presentation/splash/splash_page.dart';
 import 'package:dynamic_dashboard/presentation/login/login_page.dart';
- 
+
 class AppRouter {
   static GoRouter get router => _router;
 
@@ -25,18 +26,11 @@ class AppRouter {
         name: 'dashboard',
         builder: (context, state) => const DashboardPage(),
         routes: [
-          // Nested routes can be added here for different sections of the dashboard
-          // Example:
-          // GoRoute(
-          //   path: '/profile',
-          //   name: 'profile',
-          //   builder: (context, state) => const ProfilePage(),
-          // ),
-          // GoRoute(
-          //   path: '/settings',
-          //   name: 'settings',
-          //   builder: (context, state) => const SettingsPage(),
-          // ),
+          GoRoute(
+            path: '/profile',
+            name: 'profile',
+            builder: (context, state) => const ProfilePage(),
+          ),
         ],
       ),
     ],
@@ -57,11 +51,7 @@ class AppRouter {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.red,
-            ),
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),
             Text(
               'Page not found!',

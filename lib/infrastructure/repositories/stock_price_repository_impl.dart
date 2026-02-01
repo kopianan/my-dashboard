@@ -44,10 +44,10 @@ class StockPriceRepositoryImpl implements StockPriceRepository {
           final domainResponse = stockPriceResponse.toDomain();
           _stockPriceController.add(Right(domainResponse));
           
-          developer.log(
-            'Stock price update: ${domainResponse.data.length} trades',
-            name: 'StockPriceRepo',
-          );
+          // developer.log(
+          //   'Stock price update: ${domainResponse.data.length} trades',
+          //   name: 'StockPriceRepo',
+          // );
         } catch (e) {
           developer.log('Failed to convert stock price data: $e', name: 'StockPriceRepo');
           _stockPriceController.add(Left('Failed to process stock price data: $e'));

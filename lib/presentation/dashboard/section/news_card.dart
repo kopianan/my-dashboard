@@ -1,3 +1,5 @@
+import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
+import 'package:dynamic_dashboard/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +7,7 @@ import 'package:dynamic_dashboard/application/news/news_cubit.dart';
 import 'package:dynamic_dashboard/injection.dart';
 import 'package:dynamic_dashboard/domain/entities/news.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class NewsCard extends StatelessWidget {
   const NewsCard({super.key});
@@ -12,17 +15,18 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<NewsCubit>()..getTopHeadlines(),
+      create: (context) => context.read<DashboardActionCubit>().state.newsCubit..getTopHeadlines(),
       child: Card(
-        margin: const EdgeInsets.all(16),
+        margin: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: BlocBuilder<NewsCubit, NewsState>(
             builder: (context, state) {
               return state.when(
                 initial: () => _buildInitialState(),
                 loading: () => _buildLoadingState(),
-                loaded: (newsResponse) => _buildLoadedState(newsResponse, context),
+                loaded: (newsResponse) =>
+                    _buildLoadedState(newsResponse, context),
                 error: (message) => _buildErrorState(message, context),
               );
             },
@@ -34,17 +38,21 @@ class NewsCard extends StatelessWidget {
 
   Widget _buildInitialState() {
     return const Column(
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.article, size: 64, color: Colors.grey),
         SizedBox(height: 16),
         Text(
           'News Headlines',
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8),
         Text(
           'Loading news...',
+          textAlign: .center,
           style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ],
@@ -52,16 +60,105 @@ class NewsCard extends StatelessWidget {
   }
 
   Widget _buildLoadingState() {
-    return const Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CircularProgressIndicator(),
-        SizedBox(height: 16),
-        Text(
-          'Fetching latest news...',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+    return Skeletonizer(
+      enabled: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Header row skeleton
+          Row(
+            children: [
+              const Icon(Icons.article, size: 32, color: Colors.blue),
+              const SizedBox(width: 12),
+              const Text(
+                'Top News',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              Text(
+                '15 articles',
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Skeleton news items
+          ..._buildSkeletonNewsItems(),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildSkeletonNewsItems() {
+    return List.generate(3, (index) => _buildSkeletonNewsItem());
+  }
+
+  Widget _buildSkeletonNewsItem() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(8),
         ),
-      ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'Source Name',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.blue.shade700,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '2h ago',
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Loading news article headline that spans multiple lines',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Loading news article description that provides more context about the story being told',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'By Author Name',
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -87,15 +184,54 @@ class NewsCard extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ...newsResponse.articles
-            .map((article) => _buildNewsItem(article))
+            .map((article) => NewsItem(article: article))
             .toList(),
       ],
     );
   }
 
-  Widget _buildNewsItem(NewsArticle article) {
+  Widget _buildErrorState(String message, BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Icon(Icons.error_outline, size: 64, color: Colors.red),
+        const SizedBox(height: 16),
+        const Text(
+          'News Unavailable',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.red,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          message,
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
+            context.read<NewsCubit>().getTopHeadlines();
+          },
+          child: const Text('Retry'),
+        ),
+      ],
+    );
+  }
+}
+
+class NewsItem extends StatelessWidget {
+  const NewsItem({super.key, required this.article});
+  final NewsArticle article;
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 8),
       child: Builder(
         builder: (context) => InkWell(
           onTap: () => _handleArticleTap(context, article.url),
@@ -131,7 +267,7 @@ class NewsCard extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      _formatTime(article.publishedAt),
+                      TimeUtils.getTimeAgo(article.publishedAt),
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
@@ -174,52 +310,6 @@ class NewsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorState(String message, BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Icon(Icons.error_outline, size: 64, color: Colors.red),
-        const SizedBox(height: 16),
-        const Text(
-          'News Unavailable',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.red,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          message,
-          style: const TextStyle(fontSize: 16, color: Colors.grey),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () {
-            context.read<NewsCubit>().getTopHeadlines();
-          },
-          child: const Text('Retry'),
-        ),
-      ],
-    );
-  }
-
-  String _formatTime(DateTime dateTime) {
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
-
-    if (difference.inMinutes < 1) {
-      return 'Just now';
-    } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
-    } else if (difference.inDays < 1) {
-      return '${difference.inHours}h ago';
-    } else {
-      return '${difference.inDays}d ago';
-    }
-  }
-
   Future<void> _handleArticleTap(BuildContext context, String url) async {
     try {
       final uri = Uri.parse(url);
@@ -246,6 +336,3 @@ class NewsCard extends StatelessWidget {
     }
   }
 }
-
-
-

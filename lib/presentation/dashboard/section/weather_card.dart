@@ -1,8 +1,10 @@
+import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
 import 'package:dynamic_dashboard/domain/entities/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
 import 'package:dynamic_dashboard/injection.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class WeatherCard extends StatelessWidget {
   const WeatherCard({super.key});
@@ -10,9 +12,9 @@ class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<WeatherCubit>()..getCurrentWeather(),
+      create: (context) => context.read<DashboardActionCubit>().state.weatherCubit..getCurrentWeather(),
       child: Card(
-        margin: const EdgeInsets.all(16),
+        margin: EdgeInsets.zero,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: BlocBuilder<WeatherCubit, WeatherState>(
@@ -47,109 +49,80 @@ class WeatherCard extends StatelessWidget {
   }
 
   Widget _buildLoadingState() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Main row skeleton (icon, city, temperature)
-        Row(
-          children: [
-            // Skeleton icon
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(24),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Skeleton city name
-                  Container(
-                    height: 20,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(4),
+    return Skeletonizer(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Main row (icon, city, temperature)
+          Row(
+            children: [
+              Icon(Icons.wb_sunny, size: 48, color: Colors.orange),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Loading City Name',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    Text(
+                      'LOADING WEATHER',
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '25°C',
+                style: const TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  const Text(
+                    'Feels like',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
-                  const SizedBox(height: 4),
-                  // Skeleton description
-                  Container(
-                    height: 12,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(4),
+                  Text(
+                    '23°C',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
-            ),
-            // Skeleton temperature
-            Container(
-              height: 36,
-              width: 60,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(4),
+              Column(
+                children: [
+                  const Text(
+                    'Humidity',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  Text(
+                    '65%',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        // Skeleton for bottom row
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: 12,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  height: 16,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Container(
-                  height: 12,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  height: 16,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -158,12 +131,10 @@ class WeatherCard extends StatelessWidget {
         .round(); // Convert from Kelvin to Celsius
     final weatherInfo = weather.weather.isNotEmpty ? weather.weather[0] : null;
     final description = weatherInfo?.description ?? 'Unknown';
-    final main = weatherInfo?.main ?? 'Weather';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Icon, City name, and Temperature in one row
         Row(
           children: [
             Icon(
@@ -178,7 +149,10 @@ class WeatherCard extends StatelessWidget {
                 children: [
                   Text(
                     weather.name,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     description.toUpperCase(),
@@ -188,7 +162,7 @@ class WeatherCard extends StatelessWidget {
               ),
             ),
             Text(
-              '${temp}°C',
+              '$temp°C',
               style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w300),
             ),
           ],
@@ -235,12 +209,15 @@ class WeatherCard extends StatelessWidget {
 
   Widget _buildErrorState(String message, BuildContext context) {
     return Column(
+      mainAxisAlignment: .center,
+      crossAxisAlignment: .stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         const Icon(Icons.error_outline, size: 64, color: Colors.red),
         const SizedBox(height: 16),
         const Text(
           'Weather Error',
+          textAlign: .center,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),

@@ -10,3 +10,9 @@ abstract class User with _$User {
     required String name,
   }) = _User; 
 }
+
+extension UserX on User {
+ String getFirstCharacter() {
+    return name.isNotEmpty ? name[0].toUpperCase() : '';
+  }
+}

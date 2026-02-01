@@ -15,7 +15,7 @@ class NewsCubit extends Cubit<NewsState> {
   
   Future<void> getTopHeadlines({
     String country = 'us',
-    int pageSize = 3,
+    int pageSize = 2,
   }) async {
     emit(const NewsState.loading());
     

@@ -25,7 +25,7 @@ class StockPriceDataProvider {
 
   /// Process incoming stock price response and update internal data
   void processStockPriceResponse(StockPriceResponse response) {
-    developer.log('Processing ${response.data.length} trades', name: 'StockPriceDataProvider');
+    // developer.log('Processing ${response.data.length} trades', name: 'StockPriceDataProvider');
     
     for (final trade in response.data) {
       _processTrade(trade);
@@ -50,8 +50,8 @@ class StockPriceDataProvider {
     // Update latest price
     _latestPrices[symbol] = trade;
     
-    developer.log('Updated $symbol: \$${trade.p} (${_priceChanges[symbol]?.toStringAsFixed(2) ?? '0.00'}%)', 
-        name: 'StockPriceDataProvider');
+    // developer.log('Updated $symbol: \$${trade.p} (${_priceChanges[symbol]?.toStringAsFixed(2) ?? '0.00'}%)', 
+    //     name: 'StockPriceDataProvider');
   }
 
   /// Get latest price for a specific symbol
@@ -196,7 +196,7 @@ class StockPriceDataProvider {
 
   /// Clear all data
   void clearData() {
-    developer.log('Clearing all stock price data', name: 'StockPriceDataProvider');
+    // developer.log('Clearing all stock price data', name: 'StockPriceDataProvider');
     _latestPrices.clear();
     _previousPrices.clear();
     _priceChanges.clear();

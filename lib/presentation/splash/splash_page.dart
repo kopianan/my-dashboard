@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void _checkAuthStatus() async {
     //add three secnd delay
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     if (mounted) {
       final authCubit = getIt<AuthCubit>();
       await authCubit.checkAuthStatus();
