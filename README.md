@@ -26,9 +26,21 @@ This project follows Clean Architecture principles with the following layers:
 - **Domain**: Entities and repository interfaces
 - **Infrastructure**: Data sources, models, and external service integrations
 
-## Architectural Decisions
+## Architecture Decisions
 
-This section documents the key architectural decisions made during development and the rationale behind each choice.
+In this project, I decided to adopt Domain-Driven Design (DDD) architecture in Flutter. The primary reason is that DDD allows clearer domain configuration and enables domain sharing across multiple features, which improves scalability and long-term maintainability.
+
+Another advantage of this approach is that it does not introduce excessive boilerplate, while still keeping the codebase highly testable.
+
+For state management, I use Bloc, with Cubit for simpler features. Cubit fits well for lightweight use cases and aligns naturally with the MVVM pattern, allowing a clean separation between presentation and business logic.
+
+For navigation, I use go_router. While Flutter's native Navigator could have been sufficient, go_router has become part of my standard project setup. It simplifies routing configuration and prepares the application for future requirements such as dynamic link handling.
+
+I use Freezed as a code generator for both models and domain entities. Since DDD relies heavily on entities and immutable data structures, Freezed is a suitable choice to reduce boilerplate while ensuring type safety and consistency.
+
+For dependency management, I use get_it combined with injectable to handle dependency injection in a structured and scalable way.
+
+For local data storage, I currently use SharedPreferences, as the data usage in this project is still relatively simple and does not yet require a more complex persistence solution.
  
 ### BLoC Pattern for State Management
 **Decision**: Used BLoC (Business Logic Component) pattern with Cubit for simpler state management scenarios.
@@ -101,49 +113,49 @@ This section documents the key architectural decisions made during development a
 This section documents the AI-assisted development process and prompts used to build this application, demonstrating systematic architectural thinking and iterative development.
 
 ### Navigation Architecture
-**Prompt**: "Design a declarative navigation system using go_router for a Flutter app with authentication guards. Implement route protection that redirects unauthenticated users from dashboard to login, handles deep links gracefully, and provides smooth transitions between splash, login, and dashboard screens. Consider session validation and route state management."
+*Prompt*: "Design a declarative navigation system using go_router for a Flutter app with authentication guards. Implement route protection that redirects unauthenticated users from dashboard to login, handles deep links gracefully, and provides smooth transitions between splash, login, and dashboard screens. Consider session validation and route state management."
 
-**Rationale**: This prompt focuses on architectural considerations beyond basic routing, emphasizing security, user experience, and state management.
+*Rationale*: This prompt focuses on architectural considerations beyond basic routing, emphasizing security, user experience, and state management.
 
 ### Repository Pattern Implementation
-**Prompt**: "Architect a scalable repository pattern with clear separation of concerns for authentication services. Create abstract repository contracts, implement both local (SharedPreferences) and remote data sources, and design the architecture to support offline-first capabilities with cache invalidation strategies. Include proper error handling and data transformation layers."
+*Prompt*: "Architect a scalable repository pattern with clear separation of concerns for authentication services. Create abstract repository contracts, implement both local (SharedPreferences) and remote data sources, and design the architecture to support offline-first capabilities with cache invalidation strategies. Include proper error handling and data transformation layers."
 
-**Rationale**: Demonstrates understanding of clean architecture, separation of concerns, and enterprise-level data management patterns.
+*Rationale*: Demonstrates understanding of clean architecture, separation of concerns, and enterprise-level data management patterns.
 
 ### Dependency Injection Strategy  
-**Prompt**: "Implement a robust dependency injection system that supports testing isolation, environment-specific configurations, and lazy loading. Make SharedPreferences injectable to enable mock implementations during testing and support for different storage backends without tight coupling."
+*Prompt*: "Implement a robust dependency injection system that supports testing isolation, environment-specific configurations, and lazy loading. Make SharedPreferences injectable to enable mock implementations during testing and support for different storage backends without tight coupling."
 
-**Rationale**: Shows consideration for testability, maintainability, and flexible architecture design.
+*Rationale*: Shows consideration for testability, maintainability, and flexible architecture design.
 
 ### Session Management System
-**Prompt**: "Design a comprehensive session management system that handles authentication state persistence, automatic session validation on app lifecycle changes, secure token storage, and graceful session expiration handling. Implement state restoration that survives app restarts and background/foreground transitions."
+*Prompt*: "Design a comprehensive session management system that handles authentication state persistence, automatic session validation on app lifecycle changes, secure token storage, and graceful session expiration handling. Implement state restoration that survives app restarts and background/foreground transitions."
 
-**Rationale**: Focuses on security, user experience, and complex state management scenarios.
+*Rationale*: Focuses on security, user experience, and complex state management scenarios.
 
 ### Data Modeling with Code Generation
-**Prompt**: "Generate robust data models using Freezed that implement immutability, equality, serialization, and proper null safety. Create corresponding domain entities with clear boundaries between data transfer objects and business entities. Ensure models support JSON serialization, copying with modifications, and pattern matching for exhaustive state handling."
+*Prompt*: "Generate robust data models using Freezed that implement immutability, equality, serialization, and proper null safety. Create corresponding domain entities with clear boundaries between data transfer objects and business entities. Ensure models support JSON serialization, copying with modifications, and pattern matching for exhaustive state handling."
 
 **Example JSON**: Weather API response structure
-**Rationale**: Emphasizes type safety, immutability, and clean separation between data and domain layers.
+*Rationale*: Emphasizes type safety, immutability, and clean separation between data and domain layers.
 
 ### News Integration Architecture
-**Prompt**: "Build a news data pipeline that integrates with NewsAPI, implements proper error boundaries, supports pagination, caching strategies, and offline fallbacks. Design the architecture to support multiple news sources with a unified interface, and implement proper API key management and rate limiting considerations."
+*Prompt*: "Build a news data pipeline that integrates with NewsAPI, implements proper error boundaries, supports pagination, caching strategies, and offline fallbacks. Design the architecture to support multiple news sources with a unified interface, and implement proper API key management and rate limiting considerations."
 
 **API Endpoint**: `https://newsapi.org/v2/top-headlines?country=au&apiKey={apiKey}&pageSize=3`
-**Rationale**: Demonstrates understanding of external API integration, error handling, and scalable data architectures.
+*Rationale*: Demonstrates understanding of external API integration, error handling, and scalable data architectures.
 
 ### Real-time Data Streaming
-**Prompt**: "Implement a WebSocket-based real-time data streaming system for financial data using best practices for connection management, automatic reconnection, subscription lifecycle management, and memory-efficient data handling. Design the system to handle multiple symbol subscriptions, connection failures, and background/foreground app state changes gracefully."
+*Prompt*: "Implement a WebSocket-based real-time data streaming system for financial data using best practices for connection management, automatic reconnection, subscription lifecycle management, and memory-efficient data handling. Design the system to handle multiple symbol subscriptions, connection failures, and background/foreground app state changes gracefully."
 
 **WebSocket URL**: `wss://ws.finnhub.io?token={token}`
 **Symbols**: BINANCE:BTCUSDT, BINANCE:ETHUSDT, BINANCE:SOLBTC, BINANCE:XRPUSDT
-**Rationale**: Shows understanding of complex real-time systems, lifecycle management, and resilient network programming.
+*Rationale*: Shows understanding of complex real-time systems, lifecycle management, and resilient network programming.
 
  
 ### Testing Strategy
-**Prompt**: "Generate comprehensive unit test suites for repository classes that cover success cases, error scenarios, edge cases, and mock implementations. Implement tests for dependency injection, async operations, stream handling, and state transitions. Ensure tests are maintainable, isolated, and provide meaningful coverage metrics."
+*Prompt*: "Generate comprehensive unit test suites for repository classes that cover success cases, error scenarios, edge cases, and mock implementations. Implement tests for dependency injection, async operations, stream handling, and state transitions. Ensure tests are maintainable, isolated, and provide meaningful coverage metrics."
 
-**Rationale**: Shows commitment to code quality, maintainability, and professional development practices.
+*Rationale*: Shows commitment to code quality, maintainability, and professional development practices.
 
 ## Getting Started
 

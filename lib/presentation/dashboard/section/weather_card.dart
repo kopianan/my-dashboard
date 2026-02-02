@@ -9,8 +9,8 @@ class WeatherCard extends StatelessWidget {
   final WeatherCubit weatherCubit;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: weatherCubit..getCurrentWeather(),
+    return BlocProvider(
+      create: (_) => weatherCubit..getCurrentWeather(),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
