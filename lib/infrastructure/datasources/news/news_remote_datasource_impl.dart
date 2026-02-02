@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dynamic_dashboard/core/config/app_config.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/news/news_remote_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/news/news_model.dart';
 import 'package:http/http.dart' as http;
@@ -7,11 +8,10 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: NewsRemoteDataSource)
 class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
-  NewsRemoteDataSourceImpl(this.client);
+  NewsRemoteDataSourceImpl(this.client, this.appConfig);
   final http.Client client;
+  final AppConfig appConfig;
 
-  static const String _apiKey = 'c386cc39b83d4021b732dcad942f74e9';
-  static const String _baseUrl = 'https://newsapi.org/v2';
 
   @override
   Future<NewsResponseModel> getTopHeadlines({
@@ -19,7 +19,7 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
     int pageSize = 3,
   }) async {
     final url =
-        '$_baseUrl/top-headlines?country=$country&apiKey=$_apiKey&pageSize=$pageSize';
+        '${appConfig.newsApiBaseUrl}/top-headlines?country=$country&apiKey=${appConfig.newsApiKey}&pageSize=$pageSize';
 
     final response = await client.get(
       Uri.parse(url),

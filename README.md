@@ -24,18 +24,7 @@ This project follows Clean Architecture principles with the following layers:
 ## Architectural Decisions
 
 This section documents the key architectural decisions made during development and the rationale behind each choice.
-
-### Clean Architecture Implementation
-**Decision**: Adopted Clean Architecture with strict layer separation and dependency inversion.
-
-**Rationale**: 
-- **Testability**: Each layer can be tested in isolation with mocked dependencies
-- **Maintainability**: Changes in external APIs or UI don't affect business logic
-- **Scalability**: New features can be added without modifying existing code
-- **Team Collaboration**: Clear boundaries enable parallel development across different layers
-
-**Trade-offs**: Increased initial complexity and boilerplate code, but significantly improved long-term maintainability.
-
+ 
 ### BLoC Pattern for State Management
 **Decision**: Used BLoC (Business Logic Component) pattern with Cubit for simpler state management scenarios.
 
@@ -58,32 +47,10 @@ This section documents the key architectural decisions made during development a
 - **Testing**: Easy to mock data sources for unit tests
 
 **Implementation**: Separate repositories for Authentication, News, Weather, and Stock Price data.
-
-### Dependency Injection with Injectable
-**Decision**: Used Injectable package with GetIt service locator for dependency management.
-
-**Rationale**:
-- **Loose Coupling**: Components depend on abstractions, not concrete implementations
-- **Testing Isolation**: Easy to inject mocks and test doubles
-- **Configuration Management**: Environment-specific implementations
-- **Performance**: Lazy loading and singleton patterns where appropriate
-
-**Alternative**: Manual dependency injection was rejected due to complexity and error-proneness.
-
+ 
 ### WebSocket Implementation for Real-time Data
-**Decision**: Custom WebSocket service with connection pooling and automatic reconnection.
-
-**Rationale**:
-- **Real-time Requirements**: Stock prices need instant updates for accurate display
-- **Resource Efficiency**: Single connection handles multiple symbol subscriptions
-- **Resilience**: Automatic reconnection handles network interruptions gracefully
-- **Lifecycle Management**: Proper subscription/unsubscription prevents memory leaks
-
-**Technical Choices**:
-- Connection state management with exponential backoff
-- Message queuing during disconnection periods
-- Proper disposal in widget lifecycle methods
-
+**Decision**: Custom WebSocket service with connection pooling and automatic reconnection. Here i'm using ws to watch stock price ticker
+ 
 ### Freezed for Immutable Data Models
 **Decision**: Generated immutable data classes using Freezed package.
 
@@ -110,9 +77,7 @@ This section documents the key architectural decisions made during development a
 **Decision**: Implemented declarative routing with Go Router package.
 
 **Rationale**:
-- **Type Safety**: Named routes with compile-time validation
-- **Deep Linking**: Built-in support for web URLs and app links
-- **Guard Logic**: Centralized authentication and authorization checks
+- **Type Safety**: Named routes with compile-time validation 
 - **State Management**: Integration with BLoC for navigation state
 
 **Migration Path**: Easier transition to Flutter web and desktop platforms.
@@ -122,43 +87,10 @@ This section documents the key architectural decisions made during development a
 
 **Testing Layers**:
 - **Unit Tests**: Repository implementations, BLoCs, and utility functions
-- **Widget Tests**: UI components and user interactions
-- **Integration Tests**: End-to-end user workflows
-- **Golden Tests**: UI consistency across different screen sizes
+- **Widget Tests**: UI components and user interactions 
 
 **Mock Strategy**: Injectable dependencies enable comprehensive mocking without complex setup.
-
-### UI/UX Architectural Decisions
-**Decision**: Material Design 3 with custom theme and responsive layout system.
-
-**Rationale**:
-- **Consistency**: Platform-native look and feel
-- **Accessibility**: Built-in support for screen readers and high contrast
-- **Responsiveness**: Adaptive layouts for different screen sizes
-- **Animation**: Smooth transitions enhance user experience
-
-**Custom Components**: Reusable widgets following atomic design principles.
-
-### Error Handling Strategy
-**Decision**: Centralized error handling with user-friendly error states.
-
-**Implementation**:
-- **Network Errors**: Retry mechanisms with exponential backoff
-- **Validation Errors**: Real-time form validation with clear messaging
-- **Business Logic Errors**: Graceful degradation with fallback options
-- **Crash Prevention**: Try-catch blocks with proper logging
-
-### Performance Optimization Decisions
-**Decision**: Implemented lazy loading, image caching, and efficient list rendering.
-
-**Strategies**:
-- **Memory Management**: Proper disposal of streams and controllers
-- **Network Efficiency**: Request deduplication and caching
-- **UI Performance**: ListView.builder for large datasets
-- **Background Processing**: Isolates for heavy computations
-
-**Monitoring**: Performance profiling integrated into development workflow.
-
+ 
 ## AI Workflow
 
 This section documents the AI-assisted development process and prompts used to build this application, demonstrating systematic architectural thinking and iterative development.
@@ -225,16 +157,68 @@ This section documents the AI-assisted development process and prompts used to b
 - Dart SDK 
 - iOS/Android development environment
 
+### Environment Configuration
+
+This project uses environment variables to securely manage API keys and configuration settings. Before running the application, you need to set up your environment variables.
+
+#### 1. Create Environment File
+Copy the example environment file:
+```bash
+cp .env.example .env
+```
+
+#### 2. Configure API Keys
+Edit the `.env` file with your actual API keys:
+
+```env
+# API Keys - Replace with your actual keys
+OPENWEATHER_API_KEY=your_openweather_api_key_here
+NEWS_API_KEY=your_news_api_key_here
+FINNHUB_API_KEY=your_finnhub_api_key_here
+
+# API Base URLs (usually don't need to change)
+OPENWEATHER_BASE_URL=https://api.openweathermap.org/data/2.5
+NEWS_API_BASE_URL=https://newsapi.org/v2
+FINNHUB_WS_URL=wss://ws.finnhub.io
+
+# App Configuration
+APP_NAME=Dynamic Dashboard
+APP_VERSION=1.0.0
+DEBUG_MODE=true
+```
+
+#### 3. Get Your API Keys
+
+**OpenWeather API**
+1. Visit [https://openweathermap.org/api](https://openweathermap.org/api)
+2. Sign up for a free account
+3. Generate an API key
+4. Copy the key to your `.env` file
+
+**News API**
+1. Visit [https://newsapi.org/](https://newsapi.org/)
+2. Sign up for a developer account
+3. Get your API key from the dashboard
+4. Copy the key to your `.env` file
+
+**Finnhub API**
+1. Visit [https://finnhub.io/](https://finnhub.io/)
+2. Create a free account
+3. Get your API token
+4. Copy the token to your `.env` file
+
 ### Installation
 1. Clone the repository
-2. Run `flutter pub get` to install dependencies
-3. Configure API keys in your environment
+2. Set up environment variables (see above)
+3. Run `flutter pub get` to install dependencies
 4. Run `flutter run` to start the application
 
 ### API Keys Required
-- NewsAPI key for news integration
-- Finnhub API key for stock price data
-- Weather API key for weather services
+- **OpenWeather API**: Weather data integration
+- **News API**: Latest news articles  
+- **Finnhub API**: Real-time stock price data
+
+⚠️ **Important**: Never commit your `.env` file with real API keys to version control. The `.env` file is already added to `.gitignore` for security.
 
 ## Testing
 Run the test suite with:

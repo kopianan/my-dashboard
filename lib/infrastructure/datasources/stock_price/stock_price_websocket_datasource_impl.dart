@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:dynamic_dashboard/core/config/app_config.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/stock_price/stock_price_model.dart';
 import 'package:injectable/injectable.dart';
@@ -10,8 +11,9 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 @Injectable(as: StockPriceWebSocketDataSource)
 class StockPriceWebSocketDataSourceImpl
     implements StockPriceWebSocketDataSource {
-  static const String _wsUrl =
-      'wss://ws.finnhub.io?token=d5uvm0pr01qtqguiv7b0d5uvm0pr01qtqguiv7bg';
+  StockPriceWebSocketDataSourceImpl(this.appConfig);  
+  
+  final AppConfig appConfig;
   static const Duration _reconnectDelay = Duration(seconds: 5);
   static const int _maxReconnectAttempts = 5;
 
@@ -66,9 +68,10 @@ class StockPriceWebSocketDataSourceImpl
     _setConnectionState(WebSocketConnectionState.connecting);
 
     try {
-      developer.log('Connecting to WebSocket: $_wsUrl', name: 'StockPriceWS');
+      final wsUrl = appConfig.finnhubWsUrlWithToken;
+      developer.log('Connecting to WebSocket: $wsUrl', name: 'StockPriceWS');
 
-      _channel = WebSocketChannel.connect(Uri.parse(_wsUrl));
+      _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
 
       // Listen to WebSocket messages
       _channel!.stream.listen(

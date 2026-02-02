@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dynamic_dashboard/core/config/app_config.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/weather/weather_remote_datasource_impl.dart';
 import 'package:dynamic_dashboard/infrastructure/models/weather/weahter_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,6 +10,7 @@ import 'package:mocktail/mocktail.dart';
 
 // Mock classes
 class MockHttpClient extends Mock implements http.Client {}
+class MockAppConfig extends Mock implements AppConfig {}
 
 class TestData {
   static const weatherJson = {
@@ -35,10 +37,16 @@ class TestData {
 void main() {
   late WeatherRemoteDataSourceImpl datasource;
   late MockHttpClient mockHttpClient;
+  late MockAppConfig mockAppConfig;
 
   setUp(() {
     mockHttpClient = MockHttpClient();
-    datasource = WeatherRemoteDataSourceImpl(mockHttpClient);
+    mockAppConfig = MockAppConfig();
+    
+    when(() => mockAppConfig.openWeatherBaseUrl).thenReturn('https://api.openweathermap.org/data/2.5');
+    when(() => mockAppConfig.openWeatherApiKey).thenReturn('7c3d47baddb40e54c8308f592008dbf0');
+    
+    datasource = WeatherRemoteDataSourceImpl(mockHttpClient, mockAppConfig);
   });
 
   group('WeatherRemoteDataSource', () {

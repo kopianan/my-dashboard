@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dynamic_dashboard/core/config/app_config.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/news/news_remote_datasource_impl.dart';
 import 'package:dynamic_dashboard/infrastructure/models/news/news_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,6 +10,7 @@ import 'package:mocktail/mocktail.dart';
 
 // Mock classes
 class MockHttpClient extends Mock implements http.Client {}
+class MockAppConfig extends Mock implements AppConfig {}
 
 class TestData {
   static const newsJson = {
@@ -42,10 +44,16 @@ class TestData {
 void main() {
   late NewsRemoteDataSourceImpl datasource;
   late MockHttpClient mockHttpClient;
+  late MockAppConfig mockAppConfig;
 
   setUp(() {
     mockHttpClient = MockHttpClient();
-    datasource = NewsRemoteDataSourceImpl(mockHttpClient);
+    mockAppConfig = MockAppConfig();
+    
+    when(() => mockAppConfig.newsApiBaseUrl).thenReturn('https://newsapi.org/v2');
+    when(() => mockAppConfig.newsApiKey).thenReturn('c386cc39b83d4021b732dcad942f74e9');
+    
+    datasource = NewsRemoteDataSourceImpl(mockHttpClient, mockAppConfig);
   });
 
   group('NewsRemoteDataSource', () {

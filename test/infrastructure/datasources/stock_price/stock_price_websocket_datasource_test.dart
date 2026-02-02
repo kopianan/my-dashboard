@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dynamic_dashboard/core/config/app_config.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource_impl.dart';
 import 'package:dynamic_dashboard/infrastructure/models/stock_price/stock_price_model.dart';
@@ -8,17 +9,24 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/test_helper.dart';
 
+class MockAppConfig extends Mock implements AppConfig {}
+
 void main() {
   late StockPriceWebSocketDataSourceImpl datasource;
   late MockWebSocketChannel mockWebSocketChannel;
   late MockWebSocketSink mockWebSocketSink;
   late StreamController<dynamic> streamController;
+  late MockAppConfig mockAppConfig;
 
   setUp(() {
     mockWebSocketChannel = MockWebSocketChannel();
     mockWebSocketSink = MockWebSocketSink();
     streamController = StreamController<dynamic>();
-    datasource = StockPriceWebSocketDataSourceImpl();
+    mockAppConfig = MockAppConfig();
+    
+    when(() => mockAppConfig.finnhubWsUrlWithToken).thenReturn('wss://ws.finnhub.io?token=test_token');
+    
+    datasource = StockPriceWebSocketDataSourceImpl(mockAppConfig);
 
     // Setup WebSocket mocks
     when(() => mockWebSocketChannel.sink).thenReturn(mockWebSocketSink);

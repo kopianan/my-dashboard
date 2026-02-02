@@ -252,11 +252,13 @@ class _StockPriceCardState extends State<StockPriceCard>
   ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment:.stretch,
       children: [
         const Icon(Icons.error_outline, size: 64, color: Colors.red),
         const SizedBox(height: 16),
         const Text(
           'Market Data Unavailable',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,

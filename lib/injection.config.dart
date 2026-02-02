@@ -19,6 +19,7 @@ import 'application/dashboard_action/dashboard_action_cubit.dart' as _i872;
 import 'application/news/news_cubit.dart' as _i40;
 import 'application/stock_price/stock_price_cubit.dart' as _i985;
 import 'application/weather/weather_cubit.dart' as _i197;
+import 'core/config/app_config.dart' as _i828;
 import 'domain/repositories/auth_repository.dart' as _i716;
 import 'domain/repositories/news_repository.dart' as _i983;
 import 'domain/repositories/stock_price_repository.dart' as _i552;
@@ -64,24 +65,37 @@ extension GetItInjectableX on _i174.GetIt {
       () => sharedPreferencesModule.sharedPreferences,
       preResolve: true,
     );
+    gh.lazySingleton<_i828.AppConfig>(() => _i828.AppConfig());
     gh.lazySingleton<_i519.Client>(() => httpModule.client);
+    gh.factory<_i439.StockPriceWebSocketDataSource>(
+      () => _i789.StockPriceWebSocketDataSourceImpl(gh<_i828.AppConfig>()),
+    );
+    gh.factory<_i822.NewsRemoteDataSource>(
+      () => _i537.NewsRemoteDataSourceImpl(
+        gh<_i519.Client>(),
+        gh<_i828.AppConfig>(),
+      ),
+    );
+    gh.factory<_i887.WeatherRemoteDataSource>(
+      () => _i61.WeatherRemoteDataSourceImpl(
+        gh<_i519.Client>(),
+        gh<_i828.AppConfig>(),
+      ),
+    );
     gh.lazySingleton<_i708.AuthRemoteDataSource>(
       () => _i514.AuthRemoteDataSourceImpl(),
     );
-    gh.factory<_i439.StockPriceWebSocketDataSource>(
-      () => _i789.StockPriceWebSocketDataSourceImpl(),
+    gh.factory<_i983.NewsRepository>(
+      () => _i0.NewsRepositoryImpl(gh<_i822.NewsRemoteDataSource>()),
     );
     gh.lazySingleton<_i190.AuthLocalDataSource>(
       () => _i971.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
     );
-    gh.factory<_i822.NewsRemoteDataSource>(
-      () => _i537.NewsRemoteDataSourceImpl(gh<_i519.Client>()),
-    );
-    gh.factory<_i887.WeatherRemoteDataSource>(
-      () => _i61.WeatherRemoteDataSourceImpl(gh<_i519.Client>()),
-    );
     gh.factory<_i690.WeatherRepository>(
       () => _i517.WeatherRepositoryImpl(gh<_i887.WeatherRemoteDataSource>()),
+    );
+    gh.factory<_i40.NewsCubit>(
+      () => _i40.NewsCubit(gh<_i983.NewsRepository>()),
     );
     gh.factory<_i197.WeatherCubit>(
       () => _i197.WeatherCubit(gh<_i690.WeatherRepository>()),
@@ -103,17 +117,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i457.AuthCubit>(
       () => _i457.AuthCubit(gh<_i716.AuthRepository>()),
     );
-    gh.factory<_i983.NewsRepository>(
-      () => _i0.NewsRepositoryImpl(gh<_i822.NewsRemoteDataSource>()),
-    );
     gh.factory<_i985.StockPriceCubit>(
       () => _i985.StockPriceCubit(
         gh<_i552.StockPriceRepository>(),
         gh<_i517.StockPriceDataProvider>(),
       ),
-    );
-    gh.factory<_i40.NewsCubit>(
-      () => _i40.NewsCubit(gh<_i983.NewsRepository>()),
     );
     return this;
   }
