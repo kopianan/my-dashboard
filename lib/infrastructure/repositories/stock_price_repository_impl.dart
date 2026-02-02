@@ -177,7 +177,7 @@ class StockPriceRepositoryImpl implements StockPriceRepository {
 
   @override
   Future<Either<String, void>> pauseListening() async {
-    if (!_isListening || !_webSocketDataSource.isConnected) {
+    if (!_isListening) {
       return const Left('Not currently listening');
     }
 

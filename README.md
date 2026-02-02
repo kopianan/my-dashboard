@@ -8,10 +8,7 @@ A Flutter-based dynamic dashboard application that demonstrates clean architectu
 - **Real-time Data**: Live stock prices via WebSocket connections
 - **Weather Integration**: Current weather data with location services
 - **News Feed**: Latest news articles from reliable sources
-- **Customizable UI**: Drag-and-drop dashboard card reordering
-- **Clean Architecture**: Separation of concerns with repository pattern
-- **State Management**: BLoC pattern for predictable state management
-- **Dependency Injection**: Injectable dependencies for testability
+- **Customizable UI**: Drag-and-drop dashboard card reordering 
 
 ## Architecture
 
@@ -134,17 +131,7 @@ This section documents the AI-assisted development process and prompts used to b
 **Symbols**: BINANCE:BTCUSDT, BINANCE:ETHUSDT, BINANCE:SOLBTC, BINANCE:XRPUSDT
 **Rationale**: Shows understanding of complex real-time systems, lifecycle management, and resilient network programming.
 
-### Advanced UI Interactions
-**Prompt**: "Create an intuitive drag-and-drop dashboard system with the following UX requirements: toggle between view and edit modes, provide visual feedback (shake animations) during edit mode, implement smooth reordering animations, persist user preferences, and ensure accessibility compliance. Use state management patterns that support optimistic UI updates and rollback capabilities for failed operations."
-
-**Technical Requirements**:
-- Visual edit mode indication (shake animations)
-- Persistent order storage in SharedPreferences  
-- State management via dashboard_action BLoC
-- Smooth transitions and haptic feedback
-
-**Rationale**: Demonstrates understanding of complex UI state management, user experience design, and accessibility considerations.
-
+ 
 ### Testing Strategy
 **Prompt**: "Generate comprehensive unit test suites for repository classes that cover success cases, error scenarios, edge cases, and mock implementations. Implement tests for dependency injection, async operations, stream handling, and state transitions. Ensure tests are maintainable, isolated, and provide meaningful coverage metrics."
 
@@ -153,9 +140,12 @@ This section documents the AI-assisted development process and prompts used to b
 ## Getting Started
 
 ### Prerequisites
-- Flutter SDK (latest stable)
-- Dart SDK 
+- Flutter SDK 3.38.9 (Channel stable) or higher
+- Dart SDK (included with Flutter)
 - iOS/Android development environment
+  - **Android**: Android SDK version 35.0.1 or higher
+  - **iOS**: Xcode 26.0 or higher (for iOS development)
+- Chrome browser (for web development)
 
 ### Environment Configuration
 
@@ -188,24 +178,7 @@ DEBUG_MODE=true
 ```
 
 #### 3. Get Your API Keys
-
-**OpenWeather API**
-1. Visit [https://openweathermap.org/api](https://openweathermap.org/api)
-2. Sign up for a free account
-3. Generate an API key
-4. Copy the key to your `.env` file
-
-**News API**
-1. Visit [https://newsapi.org/](https://newsapi.org/)
-2. Sign up for a developer account
-3. Get your API key from the dashboard
-4. Copy the key to your `.env` file
-
-**Finnhub API**
-1. Visit [https://finnhub.io/](https://finnhub.io/)
-2. Create a free account
-3. Get your API token
-4. Copy the token to your `.env` file
+`.env` will send together in the email.
 
 ### Installation
 1. Clone the repository
@@ -218,8 +191,25 @@ DEBUG_MODE=true
 - **News API**: Latest news articles  
 - **Finnhub API**: Real-time stock price data
 
-⚠️ **Important**: Never commit your `.env` file with real API keys to version control. The `.env` file is already added to `.gitignore` for security.
+## Test Users
 
+For testing the authentication functionality, you can use these pre-configured test accounts:
+
+| Email | Password | Name |
+|-------|----------|------|
+| `test1@example.com` | `password123` | John Doe |
+| `test2@example.com` | `password456` | Jane Smith |
+| `admin@dashboard.com` | `admin123` | Admin User |
+| `demo@demo.com` | `demo123` | Demo User |
+
+### How to Test
+1. Launch the application
+2. Navigate to the login screen
+3. Use any of the above credentials to log in
+4. Explore the dashboard functionality
+
+**Note**: These are mock accounts for development and testing purposes only. In a production environment, implement proper user authentication and password security.
+ 
 ## Testing
 Run the test suite with:
 ```bash

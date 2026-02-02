@@ -49,8 +49,13 @@ class _StockPriceCardState extends State<StockPriceCard>
             'App resumed, resuming WebSocket',
             name: 'StockPriceCard',
           );
-          _cubit.resumeListening();
-          _isInBackground = false;
+          // Add a small delay to ensure the app is fully resumed
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted && _isInBackground) {
+              _cubit.resumeListening();
+              _isInBackground = false;
+            }
+          });
         }
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
