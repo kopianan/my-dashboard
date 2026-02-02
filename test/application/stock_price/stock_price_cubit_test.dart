@@ -185,20 +185,6 @@ void main() {
         verify(() => mockDataProvider.getPriceChange(symbol)).called(1);
       });
 
-      test('isPriceIncreasing returns data from provider', () {
-        const symbol = 'AAPL';
-        const expectedResult = true;
-
-        when(
-          () => mockDataProvider.isPriceIncreasing(symbol),
-        ).thenReturn(expectedResult);
-
-        final result = stockPriceCubit.isPriceIncreasing(symbol);
-
-        expect(result, equals(expectedResult));
-        verify(() => mockDataProvider.isPriceIncreasing(symbol)).called(1);
-      });
-
       test('getFormattedPrice returns data from provider', () {
         const symbol = 'AAPL';
         const expectedFormatted = r'$150.00';

@@ -45,40 +45,5 @@ class StockPriceUtils {
       return '${difference.inHours}h ago';
     }
   }
-
-  /// Get symbol display name
-  static String getSymbolDisplayName(String symbol) {
-    final symbolMap = {
-      'BTCUSDT': 'Bitcoin',
-      'ETHUSDT': 'Ethereum',
-      'BNBUSDT': 'Binance Coin',
-      'ADAUSDT': 'Cardano',
-      'DOGEUSDT': 'Dogecoin',
-      'XRPUSDT': 'Ripple',
-      'DOTUSDT': 'Polkadot',
-      'UNIUSDT': 'Uniswap',
-      'LTCUSDT': 'Litecoin',
-      'LINKUSDT': 'Chainlink',
-    };
-
-    return symbolMap[symbol] ?? symbol;
-  }
-
-  /// Get symbol icon/emoji
-  static String getSymbolIcon(String symbol) {
-    final iconMap = {
-      'BTCUSDT': '₿',
-      'ETHUSDT': 'Ξ',
-      'BNBUSDT': '🟡',
-      'ADAUSDT': '🔷',
-      'DOGEUSDT': '🐕',
-      'XRPUSDT': '💧',
-      'DOTUSDT': '🔴',
-      'UNIUSDT': '🦄',
-      'LTCUSDT': '🥈',
-      'LINKUSDT': '🔗',
-    };
-
-    return iconMap[symbol] ?? '📈';
-  }
+ 
 }

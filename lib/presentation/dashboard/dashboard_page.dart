@@ -144,14 +144,11 @@ class DashboardPage extends StatelessWidget {
                           right: 8,
                           child: Container(
                             padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withAlpha(178),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
+
                             child: const Icon(
                               Icons.drag_handle,
                               size: 16,
-                              color: Colors.white,
+                              color: Colors.grey,
                             ),
                           ),
                         ),

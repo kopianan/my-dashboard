@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
+import 'package:dynamic_dashboard/domain/entities/market_summary.dart';
 import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
 import 'package:dynamic_dashboard/domain/repositories/stock_price_repository.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
@@ -177,11 +178,6 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     return _dataProvider.getPriceChange(symbol);
   }
 
-  /// Check if price is increasing
-  bool isPriceIncreasing(String symbol) {
-    return _dataProvider.isPriceIncreasing(symbol);
-  }
-
   /// Get formatted price
   String getFormattedPrice(String symbol, {String currency = r'$'}) {
     return _dataProvider.getFormattedPrice(symbol, currency: currency);
@@ -195,11 +191,6 @@ class StockPriceCubit extends Cubit<StockPriceState> {
   /// Get sorted symbols by priority
   List<String> getSortedSymbols() {
     return _dataProvider.getSortedSymbols();
-  }
-
-  /// Get top performing symbols
-  List<String> getTopPerformingSymbols({int limit = 5}) {
-    return _dataProvider.getTopPerformingSymbols(limit: limit);
   }
 
   void _subscribeToStreams() {
