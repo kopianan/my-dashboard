@@ -6,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class WeatherCard extends StatelessWidget {
-  const WeatherCard({super.key});
-
+  const WeatherCard({super.key, required this.weatherCubit});
+  final WeatherCubit weatherCubit;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<WeatherCubit>()..getCurrentWeather(),
+    return BlocProvider.value(
+      value: weatherCubit..getCurrentWeather(),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(

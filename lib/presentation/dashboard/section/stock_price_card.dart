@@ -1,14 +1,13 @@
 import 'dart:developer' as developer;
 import 'package:dynamic_dashboard/application/stock_price/stock_price_cubit.dart';
 import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
-import 'package:dynamic_dashboard/injection.dart';
 import 'package:dynamic_dashboard/presentation/dashboard/widget/stock_price_skeleton_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StockPriceCard extends StatefulWidget {
-  const StockPriceCard({super.key});
-
+  const StockPriceCard({super.key, required this.stockPriceCubit});
+  final StockPriceCubit stockPriceCubit;
   @override
   State<StockPriceCard> createState() => _StockPriceCardState();
 }
@@ -21,7 +20,7 @@ class _StockPriceCardState extends State<StockPriceCard>
   @override
   void initState() {
     super.initState();
-    _cubit = getIt<StockPriceCubit>();
+    _cubit = widget.stockPriceCubit;
     WidgetsBinding.instance.addObserver(this);
 
     // Start listening when widget is created
@@ -257,7 +256,7 @@ class _StockPriceCardState extends State<StockPriceCard>
   ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment:.stretch,
+      crossAxisAlignment: .stretch,
       children: [
         const Icon(Icons.error_outline, size: 64, color: Colors.red),
         const SizedBox(height: 16),

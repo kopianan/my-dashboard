@@ -7,12 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NewsCard extends StatelessWidget {
-  const NewsCard({super.key});
-
+  const NewsCard({super.key, required this.newsCubit});
+  final NewsCubit newsCubit;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<NewsCubit>()..getTopHeadlines(),
+      create: (context) => newsCubit..getTopHeadlines(),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
