@@ -16,11 +16,15 @@ class WeatherCubit extends Cubit<WeatherState> {
   Future<void> getCurrentWeather() async {
     emit(const WeatherState.loading());
     
-    final result = await _weatherRepository.getCurrentWeather();
-    
-    result.fold(
-      (error) => emit(WeatherState.error(error)),
-      (weather) => emit(WeatherState.loaded(weather)),
-    );
+    try {
+      final result = await _weatherRepository.getCurrentWeather();
+      
+      result.fold(
+        (error) => emit(WeatherState.error(error)),
+        (weather) => emit(WeatherState.loaded(weather)),
+      );
+    } catch (error) {
+      emit(WeatherState.error(error.toString()));
+    }
   }
 }

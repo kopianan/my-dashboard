@@ -19,14 +19,18 @@ class NewsCubit extends Cubit<NewsState> {
   }) async {
     emit(const NewsState.loading());
     
-    final result = await newsRepository.getTopHeadlines(
-      country: country,
-      pageSize: pageSize,
-    );
-    
-    result.fold(
-      (error) => emit(NewsState.error(error)),
-      (newsResponse) => emit(NewsState.loaded(newsResponse)),
-    );
+    try {
+      final result = await newsRepository.getTopHeadlines(
+        country: country,
+        pageSize: pageSize,
+      );
+      
+      result.fold(
+        (error) => emit(NewsState.error(error)),
+        (newsResponse) => emit(NewsState.loaded(newsResponse)),
+      );
+    } catch (error) {
+      emit(NewsState.error(error.toString()));
+    }
   }
 }

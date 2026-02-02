@@ -206,6 +206,7 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     // Listen to price updates
     _priceStreamSubscription = _repository.stockPriceStream.listen(
       (either) {
+        if (isClosed) return; // Prevent emission after close
         either.fold(
           (error) {
             developer.log(
@@ -226,6 +227,7 @@ class StockPriceCubit extends Cubit<StockPriceState> {
         );
       },
       onError: (error) {
+        if (isClosed) return; // Prevent emission after close
         developer.log(
           'Price stream subscription error: $error',
           name: 'StockPriceCubit',
@@ -243,6 +245,7 @@ class StockPriceCubit extends Cubit<StockPriceState> {
     _connectionStreamSubscription = _repository.connectionStateStream.listen((
       connectionState,
     ) {
+      if (isClosed) return; // Prevent emission after close
       developer.log(
         'Connection state changed: $connectionState',
         name: 'StockPriceCubit',
@@ -284,6 +287,7 @@ class StockPriceCubit extends Cubit<StockPriceState> {
   }
 
   void _emitConnectedState() {
+    if (isClosed) return; // Prevent emission after close
     // Get current connection state from repository (if available)
     emit(
       StockPriceState.connected(
@@ -358,8 +362,29 @@ class StockPriceCubit extends Cubit<StockPriceState> {
   Future<void> close() async {
     developer.log('Closing StockPriceCubit', name: 'StockPriceCubit');
 
+    // Unsubscribe from streams first
     await _unsubscribeFromStreams();
-    await stopListening();
+    
+    // Stop listening but don't emit states since we're closing
+    final result = await _repository.stopListening();
+    result.fold(
+      (error) {
+        developer.log(
+          'Error stopping listening during close: $error',
+          name: 'StockPriceCubit',
+        );
+        // Don't emit error state during close
+      },
+      (_) {
+        _dataProvider.clearData();
+        developer.log(
+          'Stopped listening successfully during close',
+          name: 'StockPriceCubit',
+        );
+        // Don't emit initial state during close
+      },
+    );
+    
     _repository.dispose();
 
     return super.close();

@@ -35,6 +35,9 @@ abstract class StockPriceWebSocketDataSource {
   /// Check if paused
   bool get isPaused;
   
+  /// Get currently subscribed symbols
+  Set<String> get subscribedSymbols;
+  
   /// Dispose resources
   void dispose();
 }

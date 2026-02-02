@@ -51,6 +51,9 @@ class StockPriceWebSocketDataSourceImpl implements StockPriceWebSocketDataSource
   bool get isPaused => _isPaused;
 
   @override
+  Set<String> get subscribedSymbols => Set<String>.unmodifiable(_subscribedSymbols);
+
+  @override
   Future<void> connect() async {
     if (_isDisposed || isConnected) return;
 
