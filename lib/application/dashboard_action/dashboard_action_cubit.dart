@@ -1,8 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:dynamic_dashboard/application/news/news_cubit.dart';
-import 'package:dynamic_dashboard/application/stock_price/stock_price_cubit.dart';
-import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
-import 'package:dynamic_dashboard/injection.dart';
+import 'package:dynamic_dashboard/domain/repositories/auth_repository.dart';
 import 'package:dynamic_dashboard/utils/pref_const.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -14,13 +11,28 @@ part 'dashboard_action_cubit.freezed.dart';
 
 @injectable
 class DashboardActionCubit extends Cubit<DashboardActionState> {
-  DashboardActionCubit() : super(DashboardActionState.initial());
+  DashboardActionCubit(this._authRepository)
+    : super(DashboardActionState.initial());
+  final AuthRepository _authRepository;
 
   Future<void> loadCardOrder() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedOrder = prefs.getStringList(PrefConst.cardOrderKey);
-    if (savedOrder != null && savedOrder.isNotEmpty) {
-      emit(state.copyWith(cardOrder: savedOrder));
+    try {
+      final userResult = await _authRepository.getCurrentUser();
+      final userEmail = userResult.fold(
+        (error) => '', // If no user, use empty string (fallback)
+        (user) => user.email,
+      );
+
+      if (userEmail.isEmpty) return; // Don't load if no user is logged in
+
+      final prefs = await SharedPreferences.getInstance();
+      final userSpecificKey = '${PrefConst.cardOrderKey}_$userEmail';
+      final savedOrder = prefs.getStringList(userSpecificKey);
+      if (savedOrder != null && savedOrder.isNotEmpty) {
+        emit(state.copyWith(cardOrder: savedOrder));
+      }
+    } catch (e) {
+      // Handle error silently, keep default order
     }
   }
 
@@ -37,7 +49,42 @@ class DashboardActionCubit extends Cubit<DashboardActionState> {
   }
 
   Future<void> saveCardOrder(List<String> cardOrder) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(PrefConst.cardOrderKey, cardOrder);
+    try {
+      final userResult = await _authRepository.getCurrentUser();
+      final userEmail = userResult.fold(
+        (error) => '', // If no user, use empty string (fallback)
+        (user) => user.email,
+      );
+
+      if (userEmail.isEmpty) return; // Don't save if no user is logged in
+
+      final prefs = await SharedPreferences.getInstance();
+      final userSpecificKey = '${PrefConst.cardOrderKey}_$userEmail';
+      await prefs.setStringList(userSpecificKey, cardOrder);
+    } catch (e) {
+      // Handle error silently
+    }
+  }
+
+  /// Clear card order preferences for the current user
+  Future<void> clearUserCardOrder() async {
+    try {
+      final userResult = await _authRepository.getCurrentUser();
+      final userEmail = userResult.fold((error) => '', (user) => user.email);
+
+      if (userEmail.isEmpty) return;
+
+      final prefs = await SharedPreferences.getInstance();
+      final userSpecificKey = '${PrefConst.cardOrderKey}_$userEmail';
+      await prefs.remove(userSpecificKey);
+    } catch (e) {
+      // Handle error silently
+    }
+  }
+
+  /// Reset card order to default for current user
+  Future<void> resetCardOrder() async {
+    emit(state.copyWith(cardOrder: DashboardActionState.initial().cardOrder));
+    await clearUserCardOrder();
   }
 }

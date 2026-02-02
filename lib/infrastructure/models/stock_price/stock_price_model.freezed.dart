@@ -287,10 +287,7 @@ as String,
 /// @nodoc
 mixin _$StockTradeModel {
 
- String? get c; double get p;// price
- String get s;// symbol
- int get t;// timestamp
- double get v;
+ double get p; String get s; int get t; double get v; String? get c;
 /// Create a copy of StockTradeModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -303,16 +300,16 @@ $StockTradeModelCopyWith<StockTradeModel> get copyWith => _$StockTradeModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockTradeModel&&(identical(other.c, c) || other.c == c)&&(identical(other.p, p) || other.p == p)&&(identical(other.s, s) || other.s == s)&&(identical(other.t, t) || other.t == t)&&(identical(other.v, v) || other.v == v));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockTradeModel&&(identical(other.p, p) || other.p == p)&&(identical(other.s, s) || other.s == s)&&(identical(other.t, t) || other.t == t)&&(identical(other.v, v) || other.v == v)&&(identical(other.c, c) || other.c == c));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,c,p,s,t,v);
+int get hashCode => Object.hash(runtimeType,p,s,t,v,c);
 
 @override
 String toString() {
-  return 'StockTradeModel(c: $c, p: $p, s: $s, t: $t, v: $v)';
+  return 'StockTradeModel(p: $p, s: $s, t: $t, v: $v, c: $c)';
 }
 
 
@@ -323,7 +320,7 @@ abstract mixin class $StockTradeModelCopyWith<$Res>  {
   factory $StockTradeModelCopyWith(StockTradeModel value, $Res Function(StockTradeModel) _then) = _$StockTradeModelCopyWithImpl;
 @useResult
 $Res call({
- String? c, double p, String s, int t, double v
+ double p, String s, int t, double v, String? c
 });
 
 
@@ -340,14 +337,14 @@ class _$StockTradeModelCopyWithImpl<$Res>
 
 /// Create a copy of StockTradeModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? c = freezed,Object? p = null,Object? s = null,Object? t = null,Object? v = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? p = null,Object? s = null,Object? t = null,Object? v = null,Object? c = freezed,}) {
   return _then(_self.copyWith(
-c: freezed == c ? _self.c : c // ignore: cast_nullable_to_non_nullable
-as String?,p: null == p ? _self.p : p // ignore: cast_nullable_to_non_nullable
+p: null == p ? _self.p : p // ignore: cast_nullable_to_non_nullable
 as double,s: null == s ? _self.s : s // ignore: cast_nullable_to_non_nullable
 as String,t: null == t ? _self.t : t // ignore: cast_nullable_to_non_nullable
 as int,v: null == v ? _self.v : v // ignore: cast_nullable_to_non_nullable
-as double,
+as double,c: freezed == c ? _self.c : c // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -432,10 +429,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? c,  double p,  String s,  int t,  double v)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double p,  String s,  int t,  double v,  String? c)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StockTradeModel() when $default != null:
-return $default(_that.c,_that.p,_that.s,_that.t,_that.v);case _:
+return $default(_that.p,_that.s,_that.t,_that.v,_that.c);case _:
   return orElse();
 
 }
@@ -453,10 +450,10 @@ return $default(_that.c,_that.p,_that.s,_that.t,_that.v);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? c,  double p,  String s,  int t,  double v)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double p,  String s,  int t,  double v,  String? c)  $default,) {final _that = this;
 switch (_that) {
 case _StockTradeModel():
-return $default(_that.c,_that.p,_that.s,_that.t,_that.v);case _:
+return $default(_that.p,_that.s,_that.t,_that.v,_that.c);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -473,10 +470,10 @@ return $default(_that.c,_that.p,_that.s,_that.t,_that.v);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? c,  double p,  String s,  int t,  double v)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double p,  String s,  int t,  double v,  String? c)?  $default,) {final _that = this;
 switch (_that) {
 case _StockTradeModel() when $default != null:
-return $default(_that.c,_that.p,_that.s,_that.t,_that.v);case _:
+return $default(_that.p,_that.s,_that.t,_that.v,_that.c);case _:
   return null;
 
 }
@@ -488,17 +485,14 @@ return $default(_that.c,_that.p,_that.s,_that.t,_that.v);case _:
 @JsonSerializable()
 
 class _StockTradeModel extends StockTradeModel {
-  const _StockTradeModel({this.c, required this.p, required this.s, required this.t, required this.v}): super._();
+  const _StockTradeModel({required this.p, required this.s, required this.t, required this.v, this.c}): super._();
   factory _StockTradeModel.fromJson(Map<String, dynamic> json) => _$StockTradeModelFromJson(json);
 
-@override final  String? c;
 @override final  double p;
-// price
 @override final  String s;
-// symbol
 @override final  int t;
-// timestamp
 @override final  double v;
+@override final  String? c;
 
 /// Create a copy of StockTradeModel
 /// with the given fields replaced by the non-null parameter values.
@@ -513,16 +507,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockTradeModel&&(identical(other.c, c) || other.c == c)&&(identical(other.p, p) || other.p == p)&&(identical(other.s, s) || other.s == s)&&(identical(other.t, t) || other.t == t)&&(identical(other.v, v) || other.v == v));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockTradeModel&&(identical(other.p, p) || other.p == p)&&(identical(other.s, s) || other.s == s)&&(identical(other.t, t) || other.t == t)&&(identical(other.v, v) || other.v == v)&&(identical(other.c, c) || other.c == c));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,c,p,s,t,v);
+int get hashCode => Object.hash(runtimeType,p,s,t,v,c);
 
 @override
 String toString() {
-  return 'StockTradeModel(c: $c, p: $p, s: $s, t: $t, v: $v)';
+  return 'StockTradeModel(p: $p, s: $s, t: $t, v: $v, c: $c)';
 }
 
 
@@ -533,7 +527,7 @@ abstract mixin class _$StockTradeModelCopyWith<$Res> implements $StockTradeModel
   factory _$StockTradeModelCopyWith(_StockTradeModel value, $Res Function(_StockTradeModel) _then) = __$StockTradeModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? c, double p, String s, int t, double v
+ double p, String s, int t, double v, String? c
 });
 
 
@@ -550,14 +544,14 @@ class __$StockTradeModelCopyWithImpl<$Res>
 
 /// Create a copy of StockTradeModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? c = freezed,Object? p = null,Object? s = null,Object? t = null,Object? v = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? p = null,Object? s = null,Object? t = null,Object? v = null,Object? c = freezed,}) {
   return _then(_StockTradeModel(
-c: freezed == c ? _self.c : c // ignore: cast_nullable_to_non_nullable
-as String?,p: null == p ? _self.p : p // ignore: cast_nullable_to_non_nullable
+p: null == p ? _self.p : p // ignore: cast_nullable_to_non_nullable
 as double,s: null == s ? _self.s : s // ignore: cast_nullable_to_non_nullable
 as String,t: null == t ? _self.t : t // ignore: cast_nullable_to_non_nullable
 as int,v: null == v ? _self.v : v // ignore: cast_nullable_to_non_nullable
-as double,
+as double,c: freezed == c ? _self.c : c // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

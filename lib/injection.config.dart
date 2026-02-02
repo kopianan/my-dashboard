@@ -57,7 +57,6 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final sharedPreferencesModule = _$SharedPreferencesModule();
     final httpModule = _$HttpModule();
-    gh.factory<_i872.DashboardActionCubit>(() => _i872.DashboardActionCubit());
     gh.factory<_i517.StockPriceDataProvider>(
       () => _i517.StockPriceDataProvider(),
     );
@@ -97,6 +96,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i708.AuthRemoteDataSource>(),
         gh<_i190.AuthLocalDataSource>(),
       ),
+    );
+    gh.factory<_i872.DashboardActionCubit>(
+      () => _i872.DashboardActionCubit(gh<_i716.AuthRepository>()),
     );
     gh.lazySingleton<_i457.AuthCubit>(
       () => _i457.AuthCubit(gh<_i716.AuthRepository>()),

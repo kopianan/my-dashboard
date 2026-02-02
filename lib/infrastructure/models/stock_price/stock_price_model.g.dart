@@ -21,18 +21,18 @@ Map<String, dynamic> _$StockPriceResponseModelToJson(
 
 _StockTradeModel _$StockTradeModelFromJson(Map<String, dynamic> json) =>
     _StockTradeModel(
-      c: json['c'] as String?,
       p: (json['p'] as num).toDouble(),
       s: json['s'] as String,
       t: (json['t'] as num).toInt(),
       v: (json['v'] as num).toDouble(),
+      c: json['c'] as String?,
     );
 
 Map<String, dynamic> _$StockTradeModelToJson(_StockTradeModel instance) =>
     <String, dynamic>{
-      'c': instance.c,
       'p': instance.p,
       's': instance.s,
       't': instance.t,
       'v': instance.v,
+      'c': instance.c,
     };

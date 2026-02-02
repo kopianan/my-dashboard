@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DashboardActionState {
 
- StockPriceCubit get stockPriceCubit; WeatherCubit get weatherCubit; NewsCubit get newsCubit; String get cardOrderKey; List<String> get cardOrder;
+ String get cardOrderKey; List<String> get cardOrder;
 /// Create a copy of DashboardActionState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DashboardActionStateCopyWith<DashboardActionState> get copyWith => _$DashboardA
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardActionState&&(identical(other.stockPriceCubit, stockPriceCubit) || other.stockPriceCubit == stockPriceCubit)&&(identical(other.weatherCubit, weatherCubit) || other.weatherCubit == weatherCubit)&&(identical(other.newsCubit, newsCubit) || other.newsCubit == newsCubit)&&(identical(other.cardOrderKey, cardOrderKey) || other.cardOrderKey == cardOrderKey)&&const DeepCollectionEquality().equals(other.cardOrder, cardOrder));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardActionState&&(identical(other.cardOrderKey, cardOrderKey) || other.cardOrderKey == cardOrderKey)&&const DeepCollectionEquality().equals(other.cardOrder, cardOrder));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,stockPriceCubit,weatherCubit,newsCubit,cardOrderKey,const DeepCollectionEquality().hash(cardOrder));
+int get hashCode => Object.hash(runtimeType,cardOrderKey,const DeepCollectionEquality().hash(cardOrder));
 
 @override
 String toString() {
-  return 'DashboardActionState(stockPriceCubit: $stockPriceCubit, weatherCubit: $weatherCubit, newsCubit: $newsCubit, cardOrderKey: $cardOrderKey, cardOrder: $cardOrder)';
+  return 'DashboardActionState(cardOrderKey: $cardOrderKey, cardOrder: $cardOrder)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DashboardActionStateCopyWith<$Res>  {
   factory $DashboardActionStateCopyWith(DashboardActionState value, $Res Function(DashboardActionState) _then) = _$DashboardActionStateCopyWithImpl;
 @useResult
 $Res call({
- StockPriceCubit stockPriceCubit, WeatherCubit weatherCubit, NewsCubit newsCubit, String cardOrderKey, List<String> cardOrder
+ String cardOrderKey, List<String> cardOrder
 });
 
 
@@ -62,12 +62,9 @@ class _$DashboardActionStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardActionState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? stockPriceCubit = null,Object? weatherCubit = null,Object? newsCubit = null,Object? cardOrderKey = null,Object? cardOrder = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? cardOrderKey = null,Object? cardOrder = null,}) {
   return _then(_self.copyWith(
-stockPriceCubit: null == stockPriceCubit ? _self.stockPriceCubit : stockPriceCubit // ignore: cast_nullable_to_non_nullable
-as StockPriceCubit,weatherCubit: null == weatherCubit ? _self.weatherCubit : weatherCubit // ignore: cast_nullable_to_non_nullable
-as WeatherCubit,newsCubit: null == newsCubit ? _self.newsCubit : newsCubit // ignore: cast_nullable_to_non_nullable
-as NewsCubit,cardOrderKey: null == cardOrderKey ? _self.cardOrderKey : cardOrderKey // ignore: cast_nullable_to_non_nullable
+cardOrderKey: null == cardOrderKey ? _self.cardOrderKey : cardOrderKey // ignore: cast_nullable_to_non_nullable
 as String,cardOrder: null == cardOrder ? _self.cardOrder : cardOrder // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
@@ -154,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( StockPriceCubit stockPriceCubit,  WeatherCubit weatherCubit,  NewsCubit newsCubit,  String cardOrderKey,  List<String> cardOrder)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String cardOrderKey,  List<String> cardOrder)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DashboardActionState() when $default != null:
-return $default(_that.stockPriceCubit,_that.weatherCubit,_that.newsCubit,_that.cardOrderKey,_that.cardOrder);case _:
+return $default(_that.cardOrderKey,_that.cardOrder);case _:
   return orElse();
 
 }
@@ -175,10 +172,10 @@ return $default(_that.stockPriceCubit,_that.weatherCubit,_that.newsCubit,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( StockPriceCubit stockPriceCubit,  WeatherCubit weatherCubit,  NewsCubit newsCubit,  String cardOrderKey,  List<String> cardOrder)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String cardOrderKey,  List<String> cardOrder)  $default,) {final _that = this;
 switch (_that) {
 case _DashboardActionState():
-return $default(_that.stockPriceCubit,_that.weatherCubit,_that.newsCubit,_that.cardOrderKey,_that.cardOrder);case _:
+return $default(_that.cardOrderKey,_that.cardOrder);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +192,10 @@ return $default(_that.stockPriceCubit,_that.weatherCubit,_that.newsCubit,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( StockPriceCubit stockPriceCubit,  WeatherCubit weatherCubit,  NewsCubit newsCubit,  String cardOrderKey,  List<String> cardOrder)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String cardOrderKey,  List<String> cardOrder)?  $default,) {final _that = this;
 switch (_that) {
 case _DashboardActionState() when $default != null:
-return $default(_that.stockPriceCubit,_that.weatherCubit,_that.newsCubit,_that.cardOrderKey,_that.cardOrder);case _:
+return $default(_that.cardOrderKey,_that.cardOrder);case _:
   return null;
 
 }
@@ -210,12 +207,9 @@ return $default(_that.stockPriceCubit,_that.weatherCubit,_that.newsCubit,_that.c
 
 
 class _DashboardActionState extends DashboardActionState {
-   _DashboardActionState({required this.stockPriceCubit, required this.weatherCubit, required this.newsCubit, this.cardOrderKey = 'dashboard_card_order', final  List<String> cardOrder = const ['weather', 'news', 'stock']}): _cardOrder = cardOrder,super._();
+   _DashboardActionState({this.cardOrderKey = 'dashboard_card_order', final  List<String> cardOrder = const ['weather', 'news', 'stock']}): _cardOrder = cardOrder,super._();
   
 
-@override final  StockPriceCubit stockPriceCubit;
-@override final  WeatherCubit weatherCubit;
-@override final  NewsCubit newsCubit;
 @override@JsonKey() final  String cardOrderKey;
  final  List<String> _cardOrder;
 @override@JsonKey() List<String> get cardOrder {
@@ -235,16 +229,16 @@ _$DashboardActionStateCopyWith<_DashboardActionState> get copyWith => __$Dashboa
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardActionState&&(identical(other.stockPriceCubit, stockPriceCubit) || other.stockPriceCubit == stockPriceCubit)&&(identical(other.weatherCubit, weatherCubit) || other.weatherCubit == weatherCubit)&&(identical(other.newsCubit, newsCubit) || other.newsCubit == newsCubit)&&(identical(other.cardOrderKey, cardOrderKey) || other.cardOrderKey == cardOrderKey)&&const DeepCollectionEquality().equals(other._cardOrder, _cardOrder));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardActionState&&(identical(other.cardOrderKey, cardOrderKey) || other.cardOrderKey == cardOrderKey)&&const DeepCollectionEquality().equals(other._cardOrder, _cardOrder));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,stockPriceCubit,weatherCubit,newsCubit,cardOrderKey,const DeepCollectionEquality().hash(_cardOrder));
+int get hashCode => Object.hash(runtimeType,cardOrderKey,const DeepCollectionEquality().hash(_cardOrder));
 
 @override
 String toString() {
-  return 'DashboardActionState(stockPriceCubit: $stockPriceCubit, weatherCubit: $weatherCubit, newsCubit: $newsCubit, cardOrderKey: $cardOrderKey, cardOrder: $cardOrder)';
+  return 'DashboardActionState(cardOrderKey: $cardOrderKey, cardOrder: $cardOrder)';
 }
 
 
@@ -255,7 +249,7 @@ abstract mixin class _$DashboardActionStateCopyWith<$Res> implements $DashboardA
   factory _$DashboardActionStateCopyWith(_DashboardActionState value, $Res Function(_DashboardActionState) _then) = __$DashboardActionStateCopyWithImpl;
 @override @useResult
 $Res call({
- StockPriceCubit stockPriceCubit, WeatherCubit weatherCubit, NewsCubit newsCubit, String cardOrderKey, List<String> cardOrder
+ String cardOrderKey, List<String> cardOrder
 });
 
 
@@ -272,12 +266,9 @@ class __$DashboardActionStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardActionState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? stockPriceCubit = null,Object? weatherCubit = null,Object? newsCubit = null,Object? cardOrderKey = null,Object? cardOrder = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? cardOrderKey = null,Object? cardOrder = null,}) {
   return _then(_DashboardActionState(
-stockPriceCubit: null == stockPriceCubit ? _self.stockPriceCubit : stockPriceCubit // ignore: cast_nullable_to_non_nullable
-as StockPriceCubit,weatherCubit: null == weatherCubit ? _self.weatherCubit : weatherCubit // ignore: cast_nullable_to_non_nullable
-as WeatherCubit,newsCubit: null == newsCubit ? _self.newsCubit : newsCubit // ignore: cast_nullable_to_non_nullable
-as NewsCubit,cardOrderKey: null == cardOrderKey ? _self.cardOrderKey : cardOrderKey // ignore: cast_nullable_to_non_nullable
+cardOrderKey: null == cardOrderKey ? _self.cardOrderKey : cardOrderKey // ignore: cast_nullable_to_non_nullable
 as String,cardOrder: null == cardOrder ? _self._cardOrder : cardOrder // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));

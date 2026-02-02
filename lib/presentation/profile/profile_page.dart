@@ -12,32 +12,29 @@ class ProfilePage extends StatelessWidget {
     return BlocBuilder<DashboardActionCubit, DashboardActionState>(
       bloc: context.read<DashboardActionCubit>(),
       builder: (context, state) {
-        return BlocProvider(
-          create: (context) => state.stockPriceCubit,
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Profile'),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => context.pop(),
-              ),
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Profile'),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => context.pop(),
             ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // User Profile Section
-                  _buildUserProfileSection(context),
-                  const SizedBox(height: 32),
-
-                  // Settings Section
-                  _buildSettingsSection(context),
-                ],
-              ),
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // User Profile Section
+                _buildUserProfileSection(context),
+                const SizedBox(height: 32),
+        
+                // Settings Section
+                _buildSettingsSection(context),
+              ],
             ),
           ),
         );

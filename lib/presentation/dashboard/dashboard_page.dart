@@ -114,6 +114,7 @@ class DashboardPage extends StatelessWidget {
           ],
         ),
         body: BlocBuilder<DashboardActionCubit, DashboardActionState>(
+          bloc: context.read<DashboardActionCubit>()..loadCardOrder(),
           builder: (context, state) {
             return ReorderableListView(
               padding: const EdgeInsets.all(16),

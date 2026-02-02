@@ -20,9 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()),
-        BlocProvider(
-          create: (context) => getIt<DashboardActionCubit>()..loadCardOrder(),
-        ),
+        BlocProvider(create: (context) => getIt<DashboardActionCubit>()),
       ],
       child: MaterialApp.router(
         title: 'Dynamic Dashboard',

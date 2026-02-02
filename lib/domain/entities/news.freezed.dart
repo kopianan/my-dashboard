@@ -283,7 +283,7 @@ as List<NewsArticle>,
 /// @nodoc
 mixin _$NewsArticle {
 
- NewsSource get source; String? get author; String get title; String? get description; String get url; String? get urlToImage; DateTime get publishedAt; String? get content;
+ NewsSource get source; String get title; String get url; DateTime get publishedAt; String? get author; String? get description; String? get urlToImage; String? get content;
 /// Create a copy of NewsArticle
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -294,16 +294,16 @@ $NewsArticleCopyWith<NewsArticle> get copyWith => _$NewsArticleCopyWithImpl<News
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsArticle&&(identical(other.source, source) || other.source == source)&&(identical(other.author, author) || other.author == author)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.url, url) || other.url == url)&&(identical(other.urlToImage, urlToImage) || other.urlToImage == urlToImage)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.content, content) || other.content == content));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsArticle&&(identical(other.source, source) || other.source == source)&&(identical(other.title, title) || other.title == title)&&(identical(other.url, url) || other.url == url)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.author, author) || other.author == author)&&(identical(other.description, description) || other.description == description)&&(identical(other.urlToImage, urlToImage) || other.urlToImage == urlToImage)&&(identical(other.content, content) || other.content == content));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,source,author,title,description,url,urlToImage,publishedAt,content);
+int get hashCode => Object.hash(runtimeType,source,title,url,publishedAt,author,description,urlToImage,content);
 
 @override
 String toString() {
-  return 'NewsArticle(source: $source, author: $author, title: $title, description: $description, url: $url, urlToImage: $urlToImage, publishedAt: $publishedAt, content: $content)';
+  return 'NewsArticle(source: $source, title: $title, url: $url, publishedAt: $publishedAt, author: $author, description: $description, urlToImage: $urlToImage, content: $content)';
 }
 
 
@@ -314,7 +314,7 @@ abstract mixin class $NewsArticleCopyWith<$Res>  {
   factory $NewsArticleCopyWith(NewsArticle value, $Res Function(NewsArticle) _then) = _$NewsArticleCopyWithImpl;
 @useResult
 $Res call({
- NewsSource source, String? author, String title, String? description, String url, String? urlToImage, DateTime publishedAt, String? content
+ NewsSource source, String title, String url, DateTime publishedAt, String? author, String? description, String? urlToImage, String? content
 });
 
 
@@ -331,16 +331,16 @@ class _$NewsArticleCopyWithImpl<$Res>
 
 /// Create a copy of NewsArticle
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? author = freezed,Object? title = null,Object? description = freezed,Object? url = null,Object? urlToImage = freezed,Object? publishedAt = null,Object? content = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? title = null,Object? url = null,Object? publishedAt = null,Object? author = freezed,Object? description = freezed,Object? urlToImage = freezed,Object? content = freezed,}) {
   return _then(_self.copyWith(
 source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as NewsSource,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
-as String,urlToImage: freezed == urlToImage ? _self.urlToImage : urlToImage // ignore: cast_nullable_to_non_nullable
-as String?,publishedAt: null == publishedAt ? _self.publishedAt : publishedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as NewsSource,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,publishedAt: null == publishedAt ? _self.publishedAt : publishedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,urlToImage: freezed == urlToImage ? _self.urlToImage : urlToImage // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -435,10 +435,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NewsSource source,  String? author,  String title,  String? description,  String url,  String? urlToImage,  DateTime publishedAt,  String? content)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NewsSource source,  String title,  String url,  DateTime publishedAt,  String? author,  String? description,  String? urlToImage,  String? content)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NewsArticle() when $default != null:
-return $default(_that.source,_that.author,_that.title,_that.description,_that.url,_that.urlToImage,_that.publishedAt,_that.content);case _:
+return $default(_that.source,_that.title,_that.url,_that.publishedAt,_that.author,_that.description,_that.urlToImage,_that.content);case _:
   return orElse();
 
 }
@@ -456,10 +456,10 @@ return $default(_that.source,_that.author,_that.title,_that.description,_that.ur
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NewsSource source,  String? author,  String title,  String? description,  String url,  String? urlToImage,  DateTime publishedAt,  String? content)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NewsSource source,  String title,  String url,  DateTime publishedAt,  String? author,  String? description,  String? urlToImage,  String? content)  $default,) {final _that = this;
 switch (_that) {
 case _NewsArticle():
-return $default(_that.source,_that.author,_that.title,_that.description,_that.url,_that.urlToImage,_that.publishedAt,_that.content);case _:
+return $default(_that.source,_that.title,_that.url,_that.publishedAt,_that.author,_that.description,_that.urlToImage,_that.content);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -476,10 +476,10 @@ return $default(_that.source,_that.author,_that.title,_that.description,_that.ur
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NewsSource source,  String? author,  String title,  String? description,  String url,  String? urlToImage,  DateTime publishedAt,  String? content)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NewsSource source,  String title,  String url,  DateTime publishedAt,  String? author,  String? description,  String? urlToImage,  String? content)?  $default,) {final _that = this;
 switch (_that) {
 case _NewsArticle() when $default != null:
-return $default(_that.source,_that.author,_that.title,_that.description,_that.url,_that.urlToImage,_that.publishedAt,_that.content);case _:
+return $default(_that.source,_that.title,_that.url,_that.publishedAt,_that.author,_that.description,_that.urlToImage,_that.content);case _:
   return null;
 
 }
@@ -491,16 +491,16 @@ return $default(_that.source,_that.author,_that.title,_that.description,_that.ur
 
 
 class _NewsArticle implements NewsArticle {
-  const _NewsArticle({required this.source, this.author, required this.title, this.description, required this.url, this.urlToImage, required this.publishedAt, this.content});
+  const _NewsArticle({required this.source, required this.title, required this.url, required this.publishedAt, this.author, this.description, this.urlToImage, this.content});
   
 
 @override final  NewsSource source;
-@override final  String? author;
 @override final  String title;
-@override final  String? description;
 @override final  String url;
-@override final  String? urlToImage;
 @override final  DateTime publishedAt;
+@override final  String? author;
+@override final  String? description;
+@override final  String? urlToImage;
 @override final  String? content;
 
 /// Create a copy of NewsArticle
@@ -513,16 +513,16 @@ _$NewsArticleCopyWith<_NewsArticle> get copyWith => __$NewsArticleCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsArticle&&(identical(other.source, source) || other.source == source)&&(identical(other.author, author) || other.author == author)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.url, url) || other.url == url)&&(identical(other.urlToImage, urlToImage) || other.urlToImage == urlToImage)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.content, content) || other.content == content));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsArticle&&(identical(other.source, source) || other.source == source)&&(identical(other.title, title) || other.title == title)&&(identical(other.url, url) || other.url == url)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.author, author) || other.author == author)&&(identical(other.description, description) || other.description == description)&&(identical(other.urlToImage, urlToImage) || other.urlToImage == urlToImage)&&(identical(other.content, content) || other.content == content));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,source,author,title,description,url,urlToImage,publishedAt,content);
+int get hashCode => Object.hash(runtimeType,source,title,url,publishedAt,author,description,urlToImage,content);
 
 @override
 String toString() {
-  return 'NewsArticle(source: $source, author: $author, title: $title, description: $description, url: $url, urlToImage: $urlToImage, publishedAt: $publishedAt, content: $content)';
+  return 'NewsArticle(source: $source, title: $title, url: $url, publishedAt: $publishedAt, author: $author, description: $description, urlToImage: $urlToImage, content: $content)';
 }
 
 
@@ -533,7 +533,7 @@ abstract mixin class _$NewsArticleCopyWith<$Res> implements $NewsArticleCopyWith
   factory _$NewsArticleCopyWith(_NewsArticle value, $Res Function(_NewsArticle) _then) = __$NewsArticleCopyWithImpl;
 @override @useResult
 $Res call({
- NewsSource source, String? author, String title, String? description, String url, String? urlToImage, DateTime publishedAt, String? content
+ NewsSource source, String title, String url, DateTime publishedAt, String? author, String? description, String? urlToImage, String? content
 });
 
 
@@ -550,16 +550,16 @@ class __$NewsArticleCopyWithImpl<$Res>
 
 /// Create a copy of NewsArticle
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? source = null,Object? author = freezed,Object? title = null,Object? description = freezed,Object? url = null,Object? urlToImage = freezed,Object? publishedAt = null,Object? content = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? source = null,Object? title = null,Object? url = null,Object? publishedAt = null,Object? author = freezed,Object? description = freezed,Object? urlToImage = freezed,Object? content = freezed,}) {
   return _then(_NewsArticle(
 source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as NewsSource,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
-as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
-as String,urlToImage: freezed == urlToImage ? _self.urlToImage : urlToImage // ignore: cast_nullable_to_non_nullable
-as String?,publishedAt: null == publishedAt ? _self.publishedAt : publishedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as NewsSource,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,publishedAt: null == publishedAt ? _self.publishedAt : publishedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,urlToImage: freezed == urlToImage ? _self.urlToImage : urlToImage // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -579,7 +579,7 @@ $NewsSourceCopyWith<$Res> get source {
 /// @nodoc
 mixin _$NewsSource {
 
- String? get id; String get name;
+ String get name; String? get id;
 /// Create a copy of NewsSource
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -590,16 +590,16 @@ $NewsSourceCopyWith<NewsSource> get copyWith => _$NewsSourceCopyWithImpl<NewsSou
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsSource&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsSource&&(identical(other.name, name) || other.name == name)&&(identical(other.id, id) || other.id == id));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name);
+int get hashCode => Object.hash(runtimeType,name,id);
 
 @override
 String toString() {
-  return 'NewsSource(id: $id, name: $name)';
+  return 'NewsSource(name: $name, id: $id)';
 }
 
 
@@ -610,7 +610,7 @@ abstract mixin class $NewsSourceCopyWith<$Res>  {
   factory $NewsSourceCopyWith(NewsSource value, $Res Function(NewsSource) _then) = _$NewsSourceCopyWithImpl;
 @useResult
 $Res call({
- String? id, String name
+ String name, String? id
 });
 
 
@@ -627,11 +627,11 @@ class _$NewsSourceCopyWithImpl<$Res>
 
 /// Create a copy of NewsSource
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? id = freezed,}) {
   return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -716,10 +716,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String? id)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NewsSource() when $default != null:
-return $default(_that.id,_that.name);case _:
+return $default(_that.name,_that.id);case _:
   return orElse();
 
 }
@@ -737,10 +737,10 @@ return $default(_that.id,_that.name);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String? id)  $default,) {final _that = this;
 switch (_that) {
 case _NewsSource():
-return $default(_that.id,_that.name);case _:
+return $default(_that.name,_that.id);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -757,10 +757,10 @@ return $default(_that.id,_that.name);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String? id)?  $default,) {final _that = this;
 switch (_that) {
 case _NewsSource() when $default != null:
-return $default(_that.id,_that.name);case _:
+return $default(_that.name,_that.id);case _:
   return null;
 
 }
@@ -772,11 +772,11 @@ return $default(_that.id,_that.name);case _:
 
 
 class _NewsSource implements NewsSource {
-  const _NewsSource({this.id, required this.name});
+  const _NewsSource({required this.name, this.id});
   
 
-@override final  String? id;
 @override final  String name;
+@override final  String? id;
 
 /// Create a copy of NewsSource
 /// with the given fields replaced by the non-null parameter values.
@@ -788,16 +788,16 @@ _$NewsSourceCopyWith<_NewsSource> get copyWith => __$NewsSourceCopyWithImpl<_New
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsSource&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsSource&&(identical(other.name, name) || other.name == name)&&(identical(other.id, id) || other.id == id));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name);
+int get hashCode => Object.hash(runtimeType,name,id);
 
 @override
 String toString() {
-  return 'NewsSource(id: $id, name: $name)';
+  return 'NewsSource(name: $name, id: $id)';
 }
 
 
@@ -808,7 +808,7 @@ abstract mixin class _$NewsSourceCopyWith<$Res> implements $NewsSourceCopyWith<$
   factory _$NewsSourceCopyWith(_NewsSource value, $Res Function(_NewsSource) _then) = __$NewsSourceCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String name
+ String name, String? id
 });
 
 
@@ -825,11 +825,11 @@ class __$NewsSourceCopyWithImpl<$Res>
 
 /// Create a copy of NewsSource
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? id = freezed,}) {
   return _then(_NewsSource(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
