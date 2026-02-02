@@ -1,9 +1,8 @@
-import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
+import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
 import 'package:dynamic_dashboard/domain/entities/weather.dart';
+import 'package:dynamic_dashboard/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
-import 'package:dynamic_dashboard/injection.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class WeatherCard extends StatelessWidget {
@@ -12,7 +11,7 @@ class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => context.read<DashboardActionCubit>().state.weatherCubit..getCurrentWeather(),
+      create: (context) => getIt<WeatherCubit>()..getCurrentWeather(),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
@@ -20,8 +19,8 @@ class WeatherCard extends StatelessWidget {
           child: BlocBuilder<WeatherCubit, WeatherState>(
             builder: (context, state) {
               return state.when(
-                initial: () => _buildInitialState(),
-                loading: () => _buildLoadingState(),
+                initial: _buildInitialState,
+                loading: _buildLoadingState,
                 loaded: (weather) => _buildLoadedState(weather, context),
                 error: (message) => _buildErrorState(message, context),
               );
@@ -49,7 +48,7 @@ class WeatherCard extends StatelessWidget {
   }
 
   Widget _buildLoadingState() {
-    return Skeletonizer(
+    return const Skeletonizer(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -57,65 +56,56 @@ class WeatherCard extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.wb_sunny, size: 48, color: Colors.orange),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Loading City Name',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       'LOADING WEATHER',
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
               ),
               Text(
                 '25°C',
-                style: const TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.w300,
-                ),
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.w300),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
                 children: [
-                  const Text(
+                  Text(
                     'Feels like',
                     style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   Text(
                     '23°C',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
               Column(
                 children: [
-                  const Text(
+                  Text(
                     'Humidity',
                     style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   Text(
                     '65%',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

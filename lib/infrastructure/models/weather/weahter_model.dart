@@ -1,12 +1,11 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:dynamic_dashboard/domain/entities/weather.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'weahter_model.freezed.dart';
 part 'weahter_model.g.dart';
 
 @freezed
 abstract class WeatherModel with _$WeatherModel {
-  const WeatherModel._();
 
   const factory WeatherModel({
     required CoordModel coord,
@@ -16,6 +15,7 @@ abstract class WeatherModel with _$WeatherModel {
     required int id,
     required String name,
   }) = _WeatherModel;
+  const WeatherModel._();
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) =>
       _$WeatherModelFromJson(json);
@@ -35,10 +35,10 @@ abstract class WeatherModel with _$WeatherModel {
 
 @freezed
 abstract class CoordModel with _$CoordModel {
-  const CoordModel._();
 
   const factory CoordModel({required double lon, required double lat}) =
       _CoordModel;
+  const CoordModel._();
 
   factory CoordModel.fromJson(Map<String, dynamic> json) =>
       _$CoordModelFromJson(json);
@@ -51,7 +51,6 @@ abstract class CoordModel with _$CoordModel {
 
 @freezed
 abstract class WeatherInfoModel with _$WeatherInfoModel {
-  const WeatherInfoModel._();
 
   const factory WeatherInfoModel({
     required int id,
@@ -59,6 +58,7 @@ abstract class WeatherInfoModel with _$WeatherInfoModel {
     required String description,
     required String icon,
   }) = _WeatherInfoModel;
+  const WeatherInfoModel._();
 
   factory WeatherInfoModel.fromJson(Map<String, dynamic> json) =>
       _$WeatherInfoModelFromJson(json);
@@ -76,7 +76,6 @@ abstract class WeatherInfoModel with _$WeatherInfoModel {
 
 @freezed
 abstract class MainModel with _$MainModel {
-  const MainModel._();
 
   const factory MainModel({
     required double temp,
@@ -88,6 +87,7 @@ abstract class MainModel with _$MainModel {
     @JsonKey(name: 'sea_level') required int seaLevel,
     @JsonKey(name: 'grnd_level') required int grndLevel,
   }) = _MainModel;
+  const MainModel._();
 
   factory MainModel.fromJson(Map<String, dynamic> json) =>
       _$MainModelFromJson(json);

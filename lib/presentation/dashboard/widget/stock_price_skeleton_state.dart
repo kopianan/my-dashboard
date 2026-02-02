@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart'; 
 
 class StockPriceSkeletonState extends StatelessWidget {
-  final String statusText;
-  final Color statusColor;
 
   const StockPriceSkeletonState({
-    super.key,
-    required this.statusText,
+    required this.statusText, super.key,
     this.statusColor = Colors.green,
   });
+  final String statusText;
+  final Color statusColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +18,25 @@ class StockPriceSkeletonState extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header with market summary skeleton
-          Row(
+          const Row(
             children: [
-              const Icon(Icons.trending_up, size: 32, color: Colors.green),
-              const SizedBox(width: 12),
-              const Text(
+              Icon(Icons.trending_up, size: 32, color: Colors.green),
+              SizedBox(width: 12),
+              Text(
                 'Live Market',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              const Spacer(),
+              Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     '📈 0 📉 0',
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   Text(
                     '0 symbols',
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ),
@@ -79,13 +78,13 @@ class SkeletonStockItem extends StatelessWidget {
           const SizedBox(width: 12),
 
           // Symbol info skeleton
-          Expanded(
+          const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Bitcoin',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.transparent,
@@ -100,12 +99,12 @@ class SkeletonStockItem extends StatelessWidget {
           ),
 
           // Price and change skeleton
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '\$99,999.99',
-                style: const TextStyle(
+                r'$99,999.99',
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.transparent,

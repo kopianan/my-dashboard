@@ -1,11 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dynamic_dashboard/application/news/news_cubit.dart';
+import 'package:dynamic_dashboard/domain/entities/news.dart';
+import 'package:dynamic_dashboard/domain/repositories/news_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:dartz/dartz.dart';
-
-import 'package:dynamic_dashboard/application/news/news_cubit.dart';
-import 'package:dynamic_dashboard/domain/repositories/news_repository.dart';
-import 'package:dynamic_dashboard/domain/entities/news.dart';
 
 class MockNewsRepository extends Mock implements NewsRepository {}
 
@@ -27,13 +26,13 @@ void main() {
     totalResults: 2,
     articles: [
       NewsArticle(
-        source: const NewsSource(id: null, name: 'BBC News'),
+        source: const NewsSource(name: 'BBC News'),
         author: 'BBC Reporter',
         title: 'Test News Title',
         description: 'Test description',
         url: 'https://example.com',
         urlToImage: 'https://example.com/image.jpg',
-        publishedAt: DateTime(1970, 1, 1),
+        publishedAt: DateTime(1970),
         content: 'Test content',
       ),
     ],
@@ -88,7 +87,7 @@ void main() {
         verify: (_) {
           verify(
             () =>
-                mockNewsRepository.getTopHeadlines(country: 'au', pageSize: 5),
+                mockNewsRepository.getTopHeadlines(pageSize: 5),
           );
         },
       );

@@ -1,11 +1,10 @@
-import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as developer;
 import 'package:dynamic_dashboard/application/stock_price/stock_price_cubit.dart';
-import 'package:dynamic_dashboard/injection.dart';
 import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
+import 'package:dynamic_dashboard/injection.dart';
 import 'package:dynamic_dashboard/presentation/dashboard/widget/stock_price_skeleton_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StockPriceCard extends StatefulWidget {
   const StockPriceCard({super.key});
@@ -22,8 +21,7 @@ class _StockPriceCardState extends State<StockPriceCard>
   @override
   void initState() {
     super.initState();
-    final dashboardActionCubit = context.read<DashboardActionCubit>();
-    _cubit = dashboardActionCubit.state.stockPriceCubit;
+    _cubit = getIt<StockPriceCubit>();
     WidgetsBinding.instance.addObserver(this);
 
     // Start listening when widget is created
@@ -54,7 +52,6 @@ class _StockPriceCardState extends State<StockPriceCard>
           _cubit.resumeListening();
           _isInBackground = false;
         }
-        break;
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
         // App going to background
@@ -66,11 +63,9 @@ class _StockPriceCardState extends State<StockPriceCard>
           _cubit.pauseListening();
           _isInBackground = true;
         }
-        break;
       case AppLifecycleState.detached:
         // App is being terminated
         _cubit.stopListening();
-        break;
       case AppLifecycleState.hidden:
         // App is hidden (iOS 13+)
         break;
@@ -88,9 +83,10 @@ class _StockPriceCardState extends State<StockPriceCard>
           child: BlocBuilder<StockPriceCubit, StockPriceState>(
             builder: (context, state) {
               return state.when(
-                initial: () => StockPriceSkeletonState(statusText: 'Loading'),
+                initial: () =>
+                    const StockPriceSkeletonState(statusText: 'Loading'),
                 connecting: () =>
-                    StockPriceSkeletonState(statusText: 'Connecting'),
+                    const StockPriceSkeletonState(statusText: 'Connecting'),
                 connected: (latestPrices, connectionState, subscribedSymbols) =>
                     _buildConnectedState(
                       context,
@@ -153,9 +149,7 @@ class _StockPriceCardState extends State<StockPriceCard>
         const SizedBox(height: 16),
 
         // Stock prices list
-        ...sortedSymbols
-            .map((symbol) => _buildStockItem(cubit, symbol))
-            .toList(),
+        ...sortedSymbols.map((symbol) => _buildStockItem(cubit, symbol)),
       ],
     );
   }
@@ -166,9 +160,6 @@ class _StockPriceCardState extends State<StockPriceCard>
 
     final priceChange = cubit.getPriceChange(symbol);
     final formattedPrice = cubit.getFormattedPrice(symbol);
-    final displayName = cubit.getFormattedPrice(
-      symbol,
-    ); // This should be display name
     final icon = _getSymbolIcon(symbol);
 
     return Container(
@@ -281,7 +272,7 @@ class _StockPriceCardState extends State<StockPriceCard>
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            _cubit?.startListening();
+            _cubit.startListening();
           },
           child: const Text('Retry Connection'),
         ),

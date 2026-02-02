@@ -1,5 +1,5 @@
-import 'package:mocktail/mocktail.dart';
 import 'package:http/http.dart' as http;
+import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -14,76 +14,76 @@ class MockStream<T> extends Mock implements Stream<T> {}
 class TestData {
   // Stock price test data
   static const stockPriceJson = {
-    "data": [
+    'data': [
       {
-        "c": null,
-        "p": 16824.89,
-        "s": "BTCUSDT", 
-        "t": 1672515782136,
-        "v": 0.61500000
+        'c': null,
+        'p': 16824.89,
+        's': 'BTCUSDT', 
+        't': 1672515782136,
+        'v': 0.61500000
       }
     ],
-    "type": "trade"
+    'type': 'trade'
   };
 
   // Weather test data
   static const weatherJson = {
-    "coord": {"lon": -122.08, "lat": 37.39},
-    "weather": [
-      {"id": 800, "main": "Clear", "description": "clear sky", "icon": "01d"}
+    'coord': {'lon': -122.08, 'lat': 37.39},
+    'weather': [
+      {'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01d'}
     ],
-    "base": "stations",
-    "main": {
-      "temp": 282.55,
-      "feels_like": 281.86,
-      "temp_min": 280.37,
-      "temp_max": 284.26,
-      "pressure": 1023,
-      "humidity": 100
+    'base': 'stations',
+    'main': {
+      'temp': 282.55,
+      'feels_like': 281.86,
+      'temp_min': 280.37,
+      'temp_max': 284.26,
+      'pressure': 1023,
+      'humidity': 100
     },
-    "visibility": 16093,
-    "wind": {"speed": 1.5, "deg": 350},
-    "clouds": {"all": 1},
-    "dt": 1560350645,
-    "sys": {
-      "type": 1,
-      "id": 5122,
-      "country": "US",
-      "sunrise": 1560343627,
-      "sunset": 1560396563
+    'visibility': 16093,
+    'wind': {'speed': 1.5, 'deg': 350},
+    'clouds': {'all': 1},
+    'dt': 1560350645,
+    'sys': {
+      'type': 1,
+      'id': 5122,
+      'country': 'US',
+      'sunrise': 1560343627,
+      'sunset': 1560396563
     },
-    "timezone": -25200,
-    "id": 420006353,
-    "name": "Mountain View",
-    "cod": 200
+    'timezone': -25200,
+    'id': 420006353,
+    'name': 'Mountain View',
+    'cod': 200
   };
 
   // News test data
   static const newsJson = {
-    "status": "ok",
-    "totalResults": 2,
-    "articles": [
+    'status': 'ok',
+    'totalResults': 2,
+    'articles': [
       {
-        "source": {"id": null, "name": "BBC News"},
-        "author": "BBC",
-        "title": "Test News Title",
-        "description": "Test news description",
-        "url": "https://example.com",
-        "urlToImage": "https://example.com/image.jpg",
-        "publishedAt": "2023-01-01T12:00:00Z",
-        "content": "Test content"
+        'source': {'id': null, 'name': 'BBC News'},
+        'author': 'BBC',
+        'title': 'Test News Title',
+        'description': 'Test news description',
+        'url': 'https://example.com',
+        'urlToImage': 'https://example.com/image.jpg',
+        'publishedAt': '2023-01-01T12:00:00Z',
+        'content': 'Test content'
       }
     ]
   };
 
   // Auth test data
   static const authLoginJson = {
-    "user": {
-      "id": "123",
-      "email": "test@example.com",
-      "name": "Test User"
+    'user': {
+      'id': '123',
+      'email': 'test@example.com',
+      'name': 'Test User'
     },
-    "token": "test_token_123"
+    'token': 'test_token_123'
   };
 }
 

@@ -1,12 +1,9 @@
-import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
+import 'package:dynamic_dashboard/application/news/news_cubit.dart';
+import 'package:dynamic_dashboard/domain/entities/news.dart';
+import 'package:dynamic_dashboard/injection.dart';
 import 'package:dynamic_dashboard/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/services.dart';
-import 'package:dynamic_dashboard/application/news/news_cubit.dart';
-import 'package:dynamic_dashboard/injection.dart';
-import 'package:dynamic_dashboard/domain/entities/news.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NewsCard extends StatelessWidget {
@@ -15,16 +12,16 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => context.read<DashboardActionCubit>().state.newsCubit..getTopHeadlines(),
+      create: (context) => getIt<NewsCubit>()..getTopHeadlines(),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: BlocBuilder<NewsCubit, NewsState>(
             builder: (context, state) {
               return state.when(
-                initial: () => _buildInitialState(),
-                loading: () => _buildLoadingState(),
+                initial: _buildInitialState,
+                loading: _buildLoadingState,
                 loaded: (newsResponse) =>
                     _buildLoadedState(newsResponse, context),
                 error: (message) => _buildErrorState(message, context),
@@ -39,7 +36,6 @@ class NewsCard extends StatelessWidget {
   Widget _buildInitialState() {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.article, size: 64, color: Colors.grey),
@@ -61,24 +57,23 @@ class NewsCard extends StatelessWidget {
 
   Widget _buildLoadingState() {
     return Skeletonizer(
-      enabled: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header row skeleton
-          Row(
+          const Row(
             children: [
-              const Icon(Icons.article, size: 32, color: Colors.blue),
-              const SizedBox(width: 12),
-              const Text(
+              Icon(Icons.article, size: 32, color: Colors.blue),
+              SizedBox(width: 12),
+              Text(
                 'Top News',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              const Spacer(),
+              Spacer(),
               Text(
                 '15 articles',
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ],
           ),
@@ -127,30 +122,30 @@ class NewsCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Text(
+                const Text(
                   '2h ago',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'Loading news article headline that spans multiple lines',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
-            Text(
+            const Text(
               'Loading news article description that provides more context about the story being told',
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: TextStyle(fontSize: 14, color: Colors.grey),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'By Author Name',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey,
                 fontStyle: FontStyle.italic,
@@ -183,16 +178,13 @@ class NewsCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        ...newsResponse.articles
-            .map((article) => NewsItem(article: article))
-            .toList(),
+        ...newsResponse.articles.map((article) => NewsItem(article: article)),
       ],
     );
   }
 
   Widget _buildErrorState(String message, BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -226,7 +218,7 @@ class NewsCard extends StatelessWidget {
 }
 
 class NewsItem extends StatelessWidget {
-  const NewsItem({super.key, required this.article});
+  const NewsItem({required this.article, super.key});
   final NewsArticle article;
   @override
   Widget build(BuildContext context) {
@@ -234,7 +226,7 @@ class NewsItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: Builder(
         builder: (context) => InkWell(
-          onTap: () => _handleArticleTap(context, article.url),
+          onTap: () {},
           borderRadius: BorderRadius.circular(8),
           child: Container(
             padding: const EdgeInsets.all(12),
@@ -308,31 +300,5 @@ class NewsItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _handleArticleTap(BuildContext context, String url) async {
-    try {
-      final uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        await _copyUrlAndShowSnackbar(context, url);
-      }
-    } catch (e) {
-      // Fallback to copying URL if launch fails
-      await _copyUrlAndShowSnackbar(context, url);
-    }
-  }
-
-  Future<void> _copyUrlAndShowSnackbar(BuildContext context, String url) async {
-    await Clipboard.setData(ClipboardData(text: url));
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Article URL copied to clipboard'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
   }
 }

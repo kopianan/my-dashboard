@@ -1,19 +1,20 @@
 import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_local_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @LazySingleton(as: AuthLocalDataSource)
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+
+  const AuthLocalDataSourceImpl(this._prefs);
   final SharedPreferences _prefs;
   
   static const String _authTokenKey = 'auth_token';
   static const String _userKey = 'user_data';
   static const String _isLoggedInKey = 'is_logged_in';
-
-  const AuthLocalDataSourceImpl(this._prefs);
 
   @override
   Future<Either<String, void>> saveAuthToken(String token) async {
@@ -22,7 +23,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       await _prefs.setBool(_isLoggedInKey, true);
       return const Right(null);
     } catch (e) {
-      return Left('Failed to save auth token: ${e.toString()}');
+      return Left('Failed to save auth token: $e');
     }
   }
 
@@ -37,7 +38,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       
       return Right(token);
     } catch (e) {
-      return Left('Failed to get auth token: ${e.toString()}');
+      return Left('Failed to get auth token: $e');
     }
   }
 
@@ -48,7 +49,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       await _prefs.setBool(_isLoggedInKey, false);
       return const Right(null);
     } catch (e) {
-      return Left('Failed to delete auth token: ${e.toString()}');
+      return Left('Failed to delete auth token: $e');
     }
   }
 
@@ -59,7 +60,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       await _prefs.setString(_userKey, userJson);
       return const Right(null);
     } catch (e) {
-      return Left('Failed to save user data: ${e.toString()}');
+      return Left('Failed to save user data: $e');
     }
   }
 
@@ -77,7 +78,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       
       return Right(user);
     } catch (e) {
-      return Left('Failed to get user data: ${e.toString()}');
+      return Left('Failed to get user data: $e');
     }
   }
 
@@ -87,7 +88,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       await _prefs.remove(_userKey);
       return const Right(null);
     } catch (e) {
-      return Left('Failed to delete user data: ${e.toString()}');
+      return Left('Failed to delete user data: $e');
     }
   }
 
@@ -110,7 +111,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       
       return Right(isLoggedIn);
     } catch (e) {
-      return Left('Failed to check login status: ${e.toString()}');
+      return Left('Failed to check login status: $e');
     }
   }
 
@@ -124,7 +125,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       ]);
       return const Right(null);
     } catch (e) {
-      return Left('Failed to clear auth data: ${e.toString()}');
+      return Left('Failed to clear auth data: $e');
     }
   }
 }

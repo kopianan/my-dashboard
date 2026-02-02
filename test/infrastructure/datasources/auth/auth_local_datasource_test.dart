@@ -1,10 +1,9 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dartz/dartz.dart';
-
 import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_local_datasource_impl.dart';
 import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
 import '../../../helpers/test_helper.dart';
 
 void main() {
@@ -17,7 +16,7 @@ void main() {
   });
 
   group('AuthLocalDataSource', () {
-    final tUserModel = UserModel(
+    const tUserModel = UserModel(
       id: '123',
       email: 'test@example.com',
       name: 'Test User',
@@ -53,7 +52,7 @@ void main() {
           final result = await datasource.getUser();
 
           // assert
-          expect(result, Right(tUserModel));
+          expect(result, const Right(tUserModel));
           verify(() => mockSharedPreferences.getString('user_data'));
         },
       );
@@ -109,7 +108,7 @@ void main() {
           final result = await datasource.getAuthToken();
 
           // assert
-          expect(result, Right(tToken));
+          expect(result, const Right(tToken));
           verify(() => mockSharedPreferences.getString('auth_token'));
         },
       );

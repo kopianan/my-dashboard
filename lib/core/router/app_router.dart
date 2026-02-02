@@ -1,9 +1,9 @@
 import 'package:dynamic_dashboard/presentation/dashboard/dashboard_page.dart';
+import 'package:dynamic_dashboard/presentation/login/login_page.dart';
 import 'package:dynamic_dashboard/presentation/profile/profile_page.dart';
+import 'package:dynamic_dashboard/presentation/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dynamic_dashboard/presentation/splash/splash_page.dart';
-import 'package:dynamic_dashboard/presentation/login/login_page.dart';
 
 class AppRouter {
   static GoRouter get router => _router;

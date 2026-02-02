@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
+import 'package:dynamic_dashboard/domain/entities/news.dart';
+import 'package:dynamic_dashboard/domain/repositories/news_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:dynamic_dashboard/domain/repositories/news_repository.dart';
-import 'package:dynamic_dashboard/domain/entities/news.dart';
 
-part 'news_state.dart';
 part 'news_cubit.freezed.dart';
+part 'news_state.dart';
 
 @injectable
 class NewsCubit extends Cubit<NewsState> {
-  final NewsRepository newsRepository;
   
   NewsCubit(this.newsRepository) : super(const NewsState.initial());
+  final NewsRepository newsRepository;
   
   Future<void> getTopHeadlines({
     String country = 'us',

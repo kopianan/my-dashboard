@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_remote_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
+import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -38,7 +38,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       
       return Right(userModel);
     } catch (e) {
-      return Left('Network error: ${e.toString()}');
+      return Left('Network error: $e');
     }
   }
 
@@ -74,7 +74,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       
       return Right(userModel);
     } catch (e) {
-      return Left('Network error: ${e.toString()}');
+      return Left('Network error: $e');
     }
   }
 
@@ -87,7 +87,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       // In real app, invalidate server-side session
       return const Right(null);
     } catch (e) {
-      return Left('Network error during logout: ${e.toString()}');
+      return Left('Network error during logout: $e');
     }
   }
 
@@ -106,7 +106,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       // Mock successful password reset request
       return const Right(null);
     } catch (e) {
-      return Left('Network error: ${e.toString()}');
+      return Left('Network error: $e');
     }
   }
 }

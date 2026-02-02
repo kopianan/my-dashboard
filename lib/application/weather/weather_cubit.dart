@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
+import 'package:dynamic_dashboard/domain/entities/weather.dart';
+import 'package:dynamic_dashboard/domain/repositories/weather_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:dynamic_dashboard/domain/repositories/weather_repository.dart';
-import 'package:dynamic_dashboard/domain/entities/weather.dart';
 
-part 'weather_state.dart';
 part 'weather_cubit.freezed.dart';
+part 'weather_state.dart';
 
 @injectable
 class WeatherCubit extends Cubit<WeatherState> {
-  final WeatherRepository _weatherRepository;
   
   WeatherCubit(this._weatherRepository) : super(const WeatherState.initial());
+  final WeatherRepository _weatherRepository;
 
   Future<void> getCurrentWeather() async {
     emit(const WeatherState.loading());

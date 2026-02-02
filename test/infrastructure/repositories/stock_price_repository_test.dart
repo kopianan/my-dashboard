@@ -1,12 +1,12 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:dartz/dartz.dart';
 import 'dart:async';
 
-import 'package:dynamic_dashboard/infrastructure/repositories/stock_price_repository_impl.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/stock_price/stock_price_model.dart';
-import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
+import 'package:dynamic_dashboard/infrastructure/repositories/stock_price_repository_impl.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockStockPriceWebSocketDataSource extends Mock implements StockPriceWebSocketDataSource {}
 
@@ -111,8 +111,7 @@ void main() {
       final tStockPriceResponse = StockPriceResponseModel(
         data: [
           StockTradeModel(
-            c: null,
-            p: 50000.0,
+            p: 50000,
             s: 'BTCUSDT',
             t: DateTime.now().millisecondsSinceEpoch,
             v: 1.5,
@@ -121,15 +120,13 @@ void main() {
         type: 'trade',
       );
 
-      List<Either<String, StockPriceResponse>> receivedData = [];
+      final receivedData = <Either<String, StockPriceResponse>>[];
       
       // act
-      repository.stockPriceStream.listen((data) {
-        receivedData.add(data);
-      });
+      repository.stockPriceStream.listen(receivedData.add);
 
       stockPriceStreamController.add(tStockPriceResponse);
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
 
       // assert
       expect(receivedData.length, 1);
@@ -138,15 +135,13 @@ void main() {
 
     test('should emit error when data source stream has error', () async {
       // arrange
-      List<Either<String, StockPriceResponse>> receivedData = [];
+      final receivedData = <Either<String, StockPriceResponse>>[];
       
       // act
-      repository.stockPriceStream.listen((data) {
-        receivedData.add(data);
-      });
+      repository.stockPriceStream.listen(receivedData.add);
 
       stockPriceStreamController.addError('Stream error');
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
 
       // assert
       expect(receivedData.length, 1);

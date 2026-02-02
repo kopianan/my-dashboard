@@ -30,12 +30,9 @@ abstract class NewsResponseModel with _$NewsResponseModel {
 abstract class NewsArticleModel with _$NewsArticleModel {
   const factory NewsArticleModel({
     required NewsSourceModel source,
-    String? author,
-    required String title,
+    required String title, required String url, required String publishedAt, String? author,
     String? description,
-    required String url,
     String? urlToImage,
-    required String publishedAt,
     String? content,
   }) = _NewsArticleModel;
 
@@ -60,7 +57,7 @@ abstract class NewsArticleModel with _$NewsArticleModel {
 
 @freezed
 abstract class NewsSourceModel with _$NewsSourceModel {
-  const factory NewsSourceModel({String? id, required String name}) =
+  const factory NewsSourceModel({required String name, String? id}) =
       _NewsSourceModel;
 
   factory NewsSourceModel.fromJson(Map<String, dynamic> json) =>

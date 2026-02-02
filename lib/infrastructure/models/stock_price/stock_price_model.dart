@@ -33,11 +33,11 @@ abstract class StockPriceResponseModel with _$StockPriceResponseModel {
 @freezed
 abstract class StockTradeModel with _$StockTradeModel {
   const factory StockTradeModel({
+    required double p,
+    required String s,
+    required int t,
+    required double v,
     String? c,
-    required double p, // price
-    required String s, // symbol
-    required int t, // timestamp
-    required double v, // volume
   }) = _StockTradeModel;
 
   factory StockTradeModel.fromJson(Map<String, dynamic> json) =>

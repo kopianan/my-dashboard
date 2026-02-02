@@ -15,12 +15,9 @@ abstract class NewsResponse with _$NewsResponse {
 abstract class NewsArticle with _$NewsArticle {
   const factory NewsArticle({
     required NewsSource source,
-    String? author,
-    required String title,
+    required String title, required String url, required DateTime publishedAt, String? author,
     String? description,
-    required String url,
     String? urlToImage,
-    required DateTime publishedAt,
     String? content,
   }) = _NewsArticle;
 }
@@ -28,7 +25,6 @@ abstract class NewsArticle with _$NewsArticle {
 @freezed
 abstract class NewsSource with _$NewsSource {
   const factory NewsSource({
-    String? id,
-    required String name,
+    required String name, String? id,
   }) = _NewsSource;
 }

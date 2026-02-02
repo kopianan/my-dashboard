@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:injectable/injectable.dart';
 import 'package:dynamic_dashboard/domain/entities/user.dart';
 import 'package:dynamic_dashboard/domain/repositories/auth_repository.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 
-part 'auth_state.dart';
 part 'auth_cubit.freezed.dart';
+part 'auth_state.dart';
 
 @lazySingleton
 class AuthCubit extends Cubit<AuthState> {
-  final AuthRepository _authRepository;
   
   AuthCubit(this._authRepository) : super(const AuthState.initial());
+  final AuthRepository _authRepository;
 
   Future<void> login({
     required String email,

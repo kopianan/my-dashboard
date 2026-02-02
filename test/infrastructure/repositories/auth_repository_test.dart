@@ -1,12 +1,11 @@
+import 'package:dartz/dartz.dart';
+import 'package:dynamic_dashboard/domain/entities/user.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_local_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_remote_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
+import 'package:dynamic_dashboard/infrastructure/repositories/auth_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:dartz/dartz.dart';
-
-import 'package:dynamic_dashboard/infrastructure/repositories/auth_repository_impl.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_remote_datasource.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_local_datasource.dart';
-import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
-import 'package:dynamic_dashboard/domain/entities/user.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
 class MockAuthLocalDataSource extends Mock implements AuthLocalDataSource {}
@@ -34,13 +33,13 @@ void main() {
     const tEmail = 'test@example.com';
     const tPassword = 'password123';
     
-    final tUserModel = UserModel(
+    const tUserModel = UserModel(
       id: '123',
       email: tEmail,
       name: 'Test User',
     );
     
-    final tUser = User(
+    const tUser = User(
       id: '123',
       email: tEmail,
       name: 'Test User',
@@ -53,7 +52,7 @@ void main() {
         when(() => mockRemoteDataSource.login(
               email: any(named: 'email'),
               password: any(named: 'password'),
-            )).thenAnswer((_) async => Right(tUserModel));
+            )).thenAnswer((_) async => const Right(tUserModel));
         
         when(() => mockLocalDataSource.saveUser(any()))
             .thenAnswer((_) async => const Right(null));
@@ -64,7 +63,7 @@ void main() {
         final result = await repository.login(email: tEmail, password: tPassword);
 
         // assert
-        expect(result, Right(tUser));
+        expect(result, const Right(tUser));
         verify(() => mockRemoteDataSource.login(email: tEmail, password: tPassword));
         verify(() => mockLocalDataSource.saveUser(tUserModel));
         verify(() => mockLocalDataSource.saveAuthToken('mock_token_123'));
@@ -78,7 +77,7 @@ void main() {
         when(() => mockRemoteDataSource.login(
               email: any(named: 'email'),
               password: any(named: 'password'),
-            )).thenAnswer((_) async => Right(tUserModel));
+            )).thenAnswer((_) async => const Right(tUserModel));
         
         when(() => mockLocalDataSource.saveUser(any()))
             .thenAnswer((_) async => const Left('Save failed'));
@@ -89,7 +88,7 @@ void main() {
         final result = await repository.login(email: tEmail, password: tPassword);
 
         // assert
-        expect(result, Right(tUser));
+        expect(result, const Right(tUser));
         verify(() => mockRemoteDataSource.login(email: tEmail, password: tPassword));
       },
     );
@@ -120,13 +119,13 @@ void main() {
     const tPassword = 'password123';
     const tName = 'Test User';
     
-    final tUserModel = UserModel(
+    const tUserModel = UserModel(
       id: '123',
       email: tEmail,
       name: tName,
     );
     
-    final tUser = User(
+    const tUser = User(
       id: '123',
       email: tEmail,
       name: tName,
@@ -140,7 +139,7 @@ void main() {
               email: any(named: 'email'),
               password: any(named: 'password'),
               name: any(named: 'name'),
-            )).thenAnswer((_) async => Right(tUserModel));
+            )).thenAnswer((_) async => const Right(tUserModel));
         
         when(() => mockLocalDataSource.saveUser(any()))
             .thenAnswer((_) async => const Right(null));
@@ -155,7 +154,7 @@ void main() {
         );
 
         // assert
-        expect(result, Right(tUser));
+        expect(result, const Right(tUser));
         verify(() => mockRemoteDataSource.register(
               email: tEmail,
               password: tPassword,
@@ -231,13 +230,13 @@ void main() {
   });
 
   group('getCurrentUser', () {
-    final tUserModel = UserModel(
+    const tUserModel = UserModel(
       id: '123',
       email: 'test@example.com',
       name: 'Test User',
     );
     
-    final tUser = User(
+    const tUser = User(
       id: '123',
       email: 'test@example.com',
       name: 'Test User',
@@ -248,13 +247,13 @@ void main() {
       () async {
         // arrange
         when(() => mockLocalDataSource.getUser())
-            .thenAnswer((_) async => Right(tUserModel));
+            .thenAnswer((_) async => const Right(tUserModel));
 
         // act
         final result = await repository.getCurrentUser();
 
         // assert
-        expect(result, Right(tUser));
+        expect(result, const Right(tUser));
         verify(() => mockLocalDataSource.getUser());
       },
     );

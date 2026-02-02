@@ -1,8 +1,7 @@
-import '../domain/entities/stock_price.dart';
 
 class StockPriceUtils {
   /// Format price dengan currency symbol
-  static String formatPrice(double price, {String currency = '\$'}) {
+  static String formatPrice(double price, {String currency = r'$'}) {
     if (price >= 1000000) {
       return '$currency${(price / 1000000).toStringAsFixed(2)}M';
     } else if (price >= 1000) {

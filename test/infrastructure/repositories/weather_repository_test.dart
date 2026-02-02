@@ -1,31 +1,30 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:dartz/dartz.dart';
-
-import 'package:dynamic_dashboard/infrastructure/repositories/weather_repository_impl.dart';
+import 'package:dynamic_dashboard/domain/entities/weather.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/weather/weather_remote_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/weather/weahter_model.dart';
-import 'package:dynamic_dashboard/domain/entities/weather.dart';
+import 'package:dynamic_dashboard/infrastructure/repositories/weather_repository_impl.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockWeatherRemoteDataSource extends Mock implements WeatherRemoteDataSource {}
 
 class TestData {
   static const weatherJson = {
-    "coord": {"lon": -122.08, "lat": 37.39},
-    "weather": [
-      {"id": 800, "main": "Clear", "description": "clear sky", "icon": "01d"}
+    'coord': {'lon': -122.08, 'lat': 37.39},
+    'weather': [
+      {'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01d'}
     ],
-    "main": {
-      "temp": 282.55,
-      "feels_like": 281.86,
-      "temp_min": 280.37,
-      "temp_max": 284.26,
-      "pressure": 1023,
-      "humidity": 100
+    'main': {
+      'temp': 282.55,
+      'feels_like': 281.86,
+      'temp_min': 280.37,
+      'temp_max': 284.26,
+      'pressure': 1023,
+      'humidity': 100
     },
-    "timezone": -25200,
-    "id": 420006353,
-    "name": "Mountain View"
+    'timezone': -25200,
+    'id': 420006353,
+    'name': 'Mountain View'
   };
 }
 
@@ -39,10 +38,10 @@ void main() {
   });
 
   group('getCurrentWeather', () {
-    final tWeatherModel = WeatherModel(
+    const tWeatherModel = WeatherModel(
       coord: CoordModel(lon: -122.08, lat: 37.39),
       weather: [
-        WeatherInfoModel(id: 800, main: "Clear", description: "clear sky", icon: "01d")
+        WeatherInfoModel(id: 800, main: 'Clear', description: 'clear sky', icon: '01d')
       ],
       main: MainModel(
         temp: 282.55,
@@ -56,13 +55,13 @@ void main() {
       ),
       timezone: -25200,
       id: 420006353,
-      name: "Mountain View",
+      name: 'Mountain View',
     );
 
-    final tWeather = Weather(
+    const tWeather = Weather(
       coord: Coord(lon: -122.08, lat: 37.39),
       weather: [
-        WeatherInfo(id: 800, main: "Clear", description: "clear sky", icon: "01d")
+        WeatherInfo(id: 800, main: 'Clear', description: 'clear sky', icon: '01d')
       ],
       main: WeatherMain(
         temp: 282.55,
@@ -76,7 +75,7 @@ void main() {
       ),
       timezone: -25200,
       id: 420006353,
-      name: "Mountain View",
+      name: 'Mountain View',
     );
 
     test(
@@ -90,7 +89,7 @@ void main() {
         final result = await repository.getCurrentWeather();
 
         // assert
-        expect(result, Right(tWeather));
+        expect(result, const Right(tWeather));
         verify(() => mockRemoteDataSource.getCurrentWeather());
         verifyNoMoreInteractions(mockRemoteDataSource);
       },

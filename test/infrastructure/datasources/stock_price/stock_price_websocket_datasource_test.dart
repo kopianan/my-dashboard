@@ -1,12 +1,11 @@
+import 'dart:async';
+
+import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource_impl.dart';
+import 'package:dynamic_dashboard/infrastructure/models/stock_price/stock_price_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'dart:async';
-import 'dart:convert';
 
-import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource_impl.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
-import 'package:dynamic_dashboard/infrastructure/models/stock_price/stock_price_model.dart';
 import '../../../helpers/test_helper.dart';
 
 void main() {

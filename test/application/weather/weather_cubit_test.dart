@@ -1,11 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
+import 'package:dynamic_dashboard/domain/entities/weather.dart';
+import 'package:dynamic_dashboard/domain/repositories/weather_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:dartz/dartz.dart';
-
-import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
-import 'package:dynamic_dashboard/domain/repositories/weather_repository.dart';
-import 'package:dynamic_dashboard/domain/entities/weather.dart';
 
 class MockWeatherRepository extends Mock implements WeatherRepository {}
 

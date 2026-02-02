@@ -1,11 +1,10 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:dartz/dartz.dart';
-
-import 'package:dynamic_dashboard/infrastructure/repositories/news_repository_impl.dart';
+import 'package:dynamic_dashboard/domain/entities/news.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/news/news_remote_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/news/news_model.dart';
-import 'package:dynamic_dashboard/domain/entities/news.dart';
+import 'package:dynamic_dashboard/infrastructure/repositories/news_repository_impl.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockNewsRemoteDataSource extends Mock implements NewsRemoteDataSource {}
 
@@ -19,12 +18,12 @@ void main() {
   });
 
   group('getTopHeadlines', () {
-    final tNewsResponseModel = NewsResponseModel(
+    const tNewsResponseModel = NewsResponseModel(
       status: 'ok',
       totalResults: 2,
       articles: [
         NewsArticleModel(
-          source: NewsSourceModel(id: null, name: 'BBC News'),
+          source: NewsSourceModel(name: 'BBC News'),
           author: 'BBC Reporter',
           title: 'Test News Title',
           description: 'Test description',
@@ -41,7 +40,7 @@ void main() {
       totalResults: 2,
       articles: [
         NewsArticle(
-          source: NewsSource(id: null, name: 'BBC News'),
+          source: const NewsSource(name: 'BBC News'),
           author: 'BBC Reporter',
           title: 'Test News Title',
           description: 'Test description',
@@ -98,7 +97,7 @@ void main() {
       'should return Left when API returns non-ok status',
       () async {
         // arrange
-        final errorResponseModel = NewsResponseModel(
+        const errorResponseModel = NewsResponseModel(
           status: 'error',
           totalResults: 0,
           articles: [],
@@ -120,7 +119,7 @@ void main() {
       'should return Left when no articles are found',
       () async {
         // arrange
-        final emptyResponseModel = NewsResponseModel(
+        const emptyResponseModel = NewsResponseModel(
           status: 'ok',
           totalResults: 0,
           articles: [],

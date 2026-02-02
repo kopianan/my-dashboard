@@ -21,41 +21,45 @@ void main() {
     late MockStockPriceRepository mockRepository;
     late MockStockPriceDataProvider mockDataProvider;
     late StreamController<Either<String, StockPriceResponse>>
-        priceStreamController;
-    late StreamController<WebSocketConnectionState>
-        connectionStreamController;
+    priceStreamController;
+    late StreamController<WebSocketConnectionState> connectionStreamController;
 
     setUp(() {
       mockRepository = MockStockPriceRepository();
       mockDataProvider = MockStockPriceDataProvider();
 
       // Set up streams
-      priceStreamController = StreamController<Either<String, StockPriceResponse>>.broadcast();
-      connectionStreamController = StreamController<WebSocketConnectionState>.broadcast();
+      priceStreamController =
+          StreamController<Either<String, StockPriceResponse>>.broadcast();
+      connectionStreamController =
+          StreamController<WebSocketConnectionState>.broadcast();
 
-      when(() => mockRepository.stockPriceStream)
-          .thenAnswer((_) => priceStreamController.stream);
-      when(() => mockRepository.connectionStateStream)
-          .thenAnswer((_) => connectionStreamController.stream);
-      when(() => mockRepository.subscribedSymbols)
-          .thenReturn(<String>{});
+      when(
+        () => mockRepository.stockPriceStream,
+      ).thenAnswer((_) => priceStreamController.stream);
+      when(
+        () => mockRepository.connectionStateStream,
+      ).thenAnswer((_) => connectionStreamController.stream);
+      when(() => mockRepository.subscribedSymbols).thenReturn(<String>{});
 
       // Set up data provider defaults
-      when(() => mockDataProvider.getAllLatestPrices())
-          .thenReturn(<String, StockTrade>{});
+      when(
+        () => mockDataProvider.getAllLatestPrices(),
+      ).thenReturn(<String, StockTrade>{});
 
       // Set up default stub methods for repository to avoid null subtype errors
-      when(() => mockRepository.stopListening())
-          .thenAnswer((_) async => const Right(unit));
+      when(
+        () => mockRepository.stopListening(),
+      ).thenAnswer((_) async => const Right(()));
       when(() => mockRepository.dispose()).thenReturn(null);
 
       stockPriceCubit = StockPriceCubit(mockRepository, mockDataProvider);
     });
 
-    tearDown(() {
-      priceStreamController.close();
-      connectionStreamController.close();
-      stockPriceCubit.close();
+    tearDown(() async {
+      await priceStreamController.close();
+      await connectionStreamController.close();
+      await stockPriceCubit.close();
     });
 
     test('initial state is correct', () {
@@ -66,8 +70,9 @@ void main() {
       blocTest<StockPriceCubit, StockPriceState>(
         'emits [connecting] when starting to listen',
         build: () {
-          when(() => mockRepository.startListening())
-              .thenAnswer((_) async => const Right(unit));
+          when(
+            () => mockRepository.startListening(),
+          ).thenAnswer((_) async => const Right(()));
           return stockPriceCubit;
         },
         act: (cubit) => cubit.startListening(),
@@ -79,8 +84,9 @@ void main() {
       blocTest<StockPriceCubit, StockPriceState>(
         'emits [error] when start listening fails',
         build: () {
-          when(() => mockRepository.startListening())
-              .thenAnswer((_) async => const Left('Connection failed'));
+          when(
+            () => mockRepository.startListening(),
+          ).thenAnswer((_) async => const Left('Connection failed'));
           return stockPriceCubit;
         },
         act: (cubit) => cubit.startListening(),
@@ -96,8 +102,12 @@ void main() {
       blocTest<StockPriceCubit, StockPriceState>(
         'successfully subscribes to symbol',
         build: () {
-          when(() => mockRepository.subscribeToSymbol(testSymbol))
-              .thenAnswer((_) async => const Right(unit));
+          when(() => mockRepository.subscribeToSymbol(testSymbol)).thenAnswer((
+            _,
+          ) async {
+            final data = unit;
+            return Right(data);
+          });
           return stockPriceCubit;
         },
         act: (cubit) => cubit.subscribeToSymbol(testSymbol),
@@ -109,8 +119,9 @@ void main() {
       blocTest<StockPriceCubit, StockPriceState>(
         'emits error when subscribe fails',
         build: () {
-          when(() => mockRepository.subscribeToSymbol(testSymbol))
-              .thenAnswer((_) async => const Left('Failed to subscribe'));
+          when(
+            () => mockRepository.subscribeToSymbol(testSymbol),
+          ).thenAnswer((_) async => const Left('Failed to subscribe'));
           return stockPriceCubit;
         },
         act: (cubit) => cubit.subscribeToSymbol(testSymbol),
@@ -124,14 +135,15 @@ void main() {
       test('getLatestPrice returns data from provider', () {
         const symbol = 'AAPL';
         const expectedTrade = StockTrade(
-          p: 150.0,
+          p: 150,
           s: symbol,
           t: 1640995200000,
           v: 1000,
         );
 
-        when(() => mockDataProvider.getLatestPrice(symbol))
-            .thenReturn(expectedTrade);
+        when(
+          () => mockDataProvider.getLatestPrice(symbol),
+        ).thenReturn(expectedTrade);
 
         final result = stockPriceCubit.getLatestPrice(symbol);
 
@@ -142,15 +154,16 @@ void main() {
       test('getAllLatestPrices returns data from provider', () {
         final expectedPrices = <String, StockTrade>{
           'AAPL': const StockTrade(
-            p: 150.0,
+            p: 150,
             s: 'AAPL',
             t: 1640995200000,
             v: 1000,
           ),
         };
 
-        when(() => mockDataProvider.getAllLatestPrices())
-            .thenReturn(expectedPrices);
+        when(
+          () => mockDataProvider.getAllLatestPrices(),
+        ).thenReturn(expectedPrices);
 
         final result = stockPriceCubit.getAllLatestPrices();
 
@@ -162,8 +175,9 @@ void main() {
         const symbol = 'AAPL';
         const expectedChange = 5.0;
 
-        when(() => mockDataProvider.getPriceChange(symbol))
-            .thenReturn(expectedChange);
+        when(
+          () => mockDataProvider.getPriceChange(symbol),
+        ).thenReturn(expectedChange);
 
         final result = stockPriceCubit.getPriceChange(symbol);
 
@@ -175,8 +189,9 @@ void main() {
         const symbol = 'AAPL';
         const expectedResult = true;
 
-        when(() => mockDataProvider.isPriceIncreasing(symbol))
-            .thenReturn(expectedResult);
+        when(
+          () => mockDataProvider.isPriceIncreasing(symbol),
+        ).thenReturn(expectedResult);
 
         final result = stockPriceCubit.isPriceIncreasing(symbol);
 
@@ -186,15 +201,16 @@ void main() {
 
       test('getFormattedPrice returns data from provider', () {
         const symbol = 'AAPL';
-        const expectedFormatted = '\$150.00';
+        const expectedFormatted = r'$150.00';
 
-        when(() => mockDataProvider.getFormattedPrice(symbol, currency: '\$'))
-            .thenReturn(expectedFormatted);
+        when(
+          () => mockDataProvider.getFormattedPrice(symbol),
+        ).thenReturn(expectedFormatted);
 
         final result = stockPriceCubit.getFormattedPrice(symbol);
 
         expect(result, equals(expectedFormatted));
-        verify(() => mockDataProvider.getFormattedPrice(symbol, currency: '\$')).called(1);
+        verify(() => mockDataProvider.getFormattedPrice(symbol)).called(1);
       });
     });
   });

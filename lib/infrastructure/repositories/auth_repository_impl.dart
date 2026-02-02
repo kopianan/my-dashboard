@@ -1,20 +1,20 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 import 'package:dynamic_dashboard/domain/entities/user.dart';
 import 'package:dynamic_dashboard/domain/repositories/auth_repository.dart';
-import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_remote_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_local_datasource.dart';
+import 'package:dynamic_dashboard/infrastructure/datasources/auth/auth_remote_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/models/user/user_model.dart';
+import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource _remoteDataSource;
-  final AuthLocalDataSource _localDataSource;
 
   const AuthRepositoryImpl(
     this._remoteDataSource,
     this._localDataSource,
   );
+  final AuthRemoteDataSource _remoteDataSource;
+  final AuthLocalDataSource _localDataSource;
 
   @override
   Future<Either<String, User>> login({
@@ -80,7 +80,7 @@ class AuthRepositoryImpl implements AuthRepository {
     await _localDataSource.clearAuthData();
 
     // 2. Notify remote server (might fail, but that's ok)
-    final remoteResult = await _remoteDataSource.logout();
+    await _remoteDataSource.logout();
 
     // Return success even if remote logout fails
     return const Right(null);
@@ -92,20 +92,20 @@ class AuthRepositoryImpl implements AuthRepository {
     final localResult = await _localDataSource.getUser();
 
     return localResult.fold(
-      (error) => Left(error),
+      Left.new,
       (userModel) => Right(userModel.toEntity()),
     );
   }
 
   @override
   Future<Either<String, bool>> isLoggedIn() async {
-    return await _localDataSource.isLoggedIn();
+    return _localDataSource.isLoggedIn();
   }
 
   @override
   Future<Either<String, void>> forgotPassword({
     required String email,
   }) async {
-    return await _remoteDataSource.forgotPassword(email: email);
+    return _remoteDataSource.forgotPassword(email: email);
   }
 }

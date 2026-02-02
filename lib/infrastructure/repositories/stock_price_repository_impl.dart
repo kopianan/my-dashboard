@@ -1,13 +1,18 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
 import 'package:dynamic_dashboard/domain/repositories/stock_price_repository.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
+import 'package:injectable/injectable.dart';
 
 @Injectable(as: StockPriceRepository)
 class StockPriceRepositoryImpl implements StockPriceRepository {
+
+  StockPriceRepositoryImpl(this._webSocketDataSource) {
+    _initializeStreams();
+  }
   final StockPriceWebSocketDataSource _webSocketDataSource;
   
   // Stream controllers for converting raw streams to Either streams
@@ -17,10 +22,6 @@ class StockPriceRepositoryImpl implements StockPriceRepository {
   StreamSubscription? _dataSourceSubscription;
   bool _isListening = false;
   final Set<String> _subscribedSymbols = <String>{};
-
-  StockPriceRepositoryImpl(this._webSocketDataSource) {
-    _initializeStreams();
-  }
 
   @override
   Stream<Either<String, StockPriceResponse>> get stockPriceStream => 

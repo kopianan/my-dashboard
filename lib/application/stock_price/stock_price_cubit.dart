@@ -1,26 +1,26 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:injectable/injectable.dart';
-import 'package:dynamic_dashboard/domain/repositories/stock_price_repository.dart';
 import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
+import 'package:dynamic_dashboard/domain/repositories/stock_price_repository.dart';
 import 'package:dynamic_dashboard/infrastructure/datasources/stock_price/stock_price_websocket_datasource.dart';
 import 'package:dynamic_dashboard/infrastructure/providers/stock_price_data_provider.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 
-part 'stock_price_state.dart';
 part 'stock_price_cubit.freezed.dart';
+part 'stock_price_state.dart';
 
 @injectable
 class StockPriceCubit extends Cubit<StockPriceState> {
+  StockPriceCubit(this._repository, this._dataProvider)
+    : super(const StockPriceState.initial());
   final StockPriceRepository _repository;
   final StockPriceDataProvider _dataProvider;
 
   StreamSubscription? _priceStreamSubscription;
   StreamSubscription? _connectionStreamSubscription;
-
-  StockPriceCubit(this._repository, this._dataProvider)
-    : super(const StockPriceState.initial());
 
   /// Start listening to real-time stock price updates
   Future<void> startListening() async {
@@ -183,7 +183,7 @@ class StockPriceCubit extends Cubit<StockPriceState> {
   }
 
   /// Get formatted price
-  String getFormattedPrice(String symbol, {String currency = '\$'}) {
+  String getFormattedPrice(String symbol, {String currency = r'$'}) {
     return _dataProvider.getFormattedPrice(symbol, currency: currency);
   }
 
@@ -256,10 +256,8 @@ class StockPriceCubit extends Cubit<StockPriceState> {
           if (state is! _Connecting) {
             emit(const StockPriceState.connecting());
           }
-          break;
         case WebSocketConnectionState.connected:
           _emitConnectedState();
-          break;
         case WebSocketConnectionState.disconnected:
         case WebSocketConnectionState.error:
           emit(
@@ -268,7 +266,6 @@ class StockPriceCubit extends Cubit<StockPriceState> {
               latestPrices: _dataProvider.getAllLatestPrices(),
             ),
           );
-          break;
         case WebSocketConnectionState.reconnecting:
           // Keep current state but could show reconnecting indicator
           break;
@@ -364,7 +361,7 @@ class StockPriceCubit extends Cubit<StockPriceState> {
 
     // Unsubscribe from streams first
     await _unsubscribeFromStreams();
-    
+
     // Stop listening but don't emit states since we're closing
     final result = await _repository.stopListening();
     result.fold(
@@ -384,7 +381,7 @@ class StockPriceCubit extends Cubit<StockPriceState> {
         // Don't emit initial state during close
       },
     );
-    
+
     _repository.dispose();
 
     return super.close();

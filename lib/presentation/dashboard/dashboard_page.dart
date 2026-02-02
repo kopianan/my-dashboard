@@ -1,13 +1,12 @@
+import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
+import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
 import 'package:dynamic_dashboard/domain/entities/user.dart';
+import 'package:dynamic_dashboard/presentation/dashboard/section/news_card.dart';
+import 'package:dynamic_dashboard/presentation/dashboard/section/stock_price_card.dart';
+import 'package:dynamic_dashboard/presentation/dashboard/section/weather_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
-import 'package:dynamic_dashboard/application/dashboard_action/dashboard_action_cubit.dart';
-import 'package:dynamic_dashboard/presentation/dashboard/section/weather_card.dart';
-import 'package:dynamic_dashboard/presentation/dashboard/section/news_card.dart';
-import 'package:dynamic_dashboard/presentation/dashboard/section/stock_price_card.dart';
-import 'package:dynamic_dashboard/injection.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -16,11 +15,11 @@ class DashboardPage extends StatelessWidget {
     // Use consistent keys to maintain widget state across rebuilds
     switch (cardType) {
       case 'weather':
-        return WeatherCard(key: const PageStorageKey('weather_card'));
+        return const WeatherCard(key: PageStorageKey('weather_card'));
       case 'news':
-        return NewsCard(key: const PageStorageKey('news_card'));
+        return const NewsCard(key: PageStorageKey('news_card'));
       case 'stock':
-        return StockPriceCard(key: const PageStorageKey('stock_card'));
+        return const StockPriceCard(key: PageStorageKey('stock_card'));
       default:
         return const SizedBox.shrink();
     }
@@ -85,7 +84,7 @@ class DashboardPage extends StatelessWidget {
                       ),
                     ],
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: CircleAvatar(
                         backgroundColor: const Color.fromARGB(
                           255,
@@ -101,7 +100,7 @@ class DashboardPage extends StatelessWidget {
                     ),
                   ),
                   loading: () => const Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16),
                     child: SizedBox(
                       width: 16,
                       height: 16,
@@ -117,8 +116,6 @@ class DashboardPage extends StatelessWidget {
         body: BlocBuilder<DashboardActionCubit, DashboardActionState>(
           builder: (context, state) {
             return ReorderableListView(
-              buildDefaultDragHandles: true,
-
               padding: const EdgeInsets.all(16),
               onReorder: (oldIndex, newIndex) {
                 context.read<DashboardActionCubit>().reorderCards(

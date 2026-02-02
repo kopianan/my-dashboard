@@ -1,8 +1,8 @@
+import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
 import 'package:dynamic_dashboard/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -18,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
     _checkAuthStatus();
   }
 
-  void _checkAuthStatus() async {
+  Future<void> _checkAuthStatus() async {
     //add three secnd delay
     await Future.delayed(const Duration(seconds: 1));
     if (mounted) {

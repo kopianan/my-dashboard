@@ -1,39 +1,39 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:dynamic_dashboard/infrastructure/datasources/news/news_remote_datasource_impl.dart';
 import 'package:dynamic_dashboard/infrastructure/models/news/news_model.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:mocktail/mocktail.dart';
 
 // Mock classes
 class MockHttpClient extends Mock implements http.Client {}
 
 class TestData {
   static const newsJson = {
-    "status": "ok",
-    "totalResults": 2,
-    "articles": [
+    'status': 'ok',
+    'totalResults': 2,
+    'articles': [
       {
-        "source": {"id": null, "name": "BBC News"},
-        "author": "BBC Reporter",
-        "title": "Test News Title",
-        "description": "Test news description content",
-        "url": "https://example.com/news",
-        "urlToImage": "https://example.com/image.jpg",
-        "publishedAt": "2023-01-01T12:00:00Z",
-        "content": "Test news content goes here..."
+        'source': {'id': null, 'name': 'BBC News'},
+        'author': 'BBC Reporter',
+        'title': 'Test News Title',
+        'description': 'Test news description content',
+        'url': 'https://example.com/news',
+        'urlToImage': 'https://example.com/image.jpg',
+        'publishedAt': '2023-01-01T12:00:00Z',
+        'content': 'Test news content goes here...'
       },
       {
-        "source": {"id": "cnn", "name": "CNN"},
-        "author": "CNN Reporter",
-        "title": "Second Test News",
-        "description": "Second test description",
-        "url": "https://example.com/news2",
-        "urlToImage": "https://example.com/image2.jpg",
-        "publishedAt": "2023-01-02T15:30:00Z",
-        "content": "Second news content..."
+        'source': {'id': 'cnn', 'name': 'CNN'},
+        'author': 'CNN Reporter',
+        'title': 'Second Test News',
+        'description': 'Second test description',
+        'url': 'https://example.com/news2',
+        'urlToImage': 'https://example.com/image2.jpg',
+        'publishedAt': '2023-01-02T15:30:00Z',
+        'content': 'Second news content...'
       }
     ]
   };
@@ -133,9 +133,9 @@ void main() {
     test('should handle response with empty articles array', () async {
       // arrange
       final emptyNewsJson = {
-        "status": "ok",
-        "totalResults": 0,
-        "articles": []
+        'status': 'ok',
+        'totalResults': 0,
+        'articles': []
       };
       
       when(() => mockHttpClient.get(Uri.parse(tUrl), headers: any(named: 'headers')))

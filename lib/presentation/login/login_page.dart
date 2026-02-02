@@ -1,7 +1,7 @@
+import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() async {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       // Use AuthCubit for login
       context.read<AuthCubit>().login(
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
             body: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Form(
                 key: _formKey,
                 child: Column(

@@ -1,8 +1,6 @@
-import 'dart:async';
-import 'dart:developer' as developer;
-import 'package:injectable/injectable.dart';
 import 'package:dynamic_dashboard/domain/entities/stock_price.dart';
 import 'package:dynamic_dashboard/utils/stock_price_utils.dart';
+import 'package:injectable/injectable.dart';
 
 @injectable
 class StockPriceDataProvider {
@@ -115,7 +113,7 @@ class StockPriceDataProvider {
   }
 
   /// Get formatted price string for a symbol
-  String getFormattedPrice(String symbol, {String currency = '\$'}) {
+  String getFormattedPrice(String symbol, {String currency = r'$'}) {
     final trade = getLatestPrice(symbol);
     if (trade == null) return 'N/A';
     return StockPriceUtils.formatPrice(trade.p, currency: currency);
@@ -150,7 +148,7 @@ class StockPriceDataProvider {
     if (_latestPrices.isEmpty) {
       return const MarketSummary(
         totalSymbols: 0,
-        averageChange: 0.0,
+        averageChange: 0,
         gainers: 0,
         losers: 0,
         unchanged: 0,
@@ -161,9 +159,9 @@ class StockPriceDataProvider {
     final changes = _priceChanges.values.toList();
     final averageChange = changes.isEmpty ? 0.0 : changes.reduce((a, b) => a + b) / changes.length;
     
-    int gainers = 0;
-    int losers = 0;
-    int unchanged = 0;
+    var gainers = 0;
+    var losers = 0;
+    var unchanged = 0;
     
     for (final change in changes) {
       if (change > 0) {
@@ -218,11 +216,6 @@ class StockPriceDataProvider {
 
 /// Market summary statistics
 class MarketSummary {
-  final int totalSymbols;
-  final double averageChange;
-  final int gainers;
-  final int losers;
-  final int unchanged;
 
   const MarketSummary({
     required this.totalSymbols,
@@ -231,4 +224,9 @@ class MarketSummary {
     required this.losers,
     required this.unchanged,
   });
+  final int totalSymbols;
+  final double averageChange;
+  final int gainers;
+  final int losers;
+  final int unchanged;
 }

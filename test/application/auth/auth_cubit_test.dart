@@ -1,11 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
+import 'package:dynamic_dashboard/domain/entities/user.dart';
+import 'package:dynamic_dashboard/domain/repositories/auth_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:dartz/dartz.dart';
-
-import 'package:dynamic_dashboard/application/auth/auth_cubit.dart';
-import 'package:dynamic_dashboard/domain/repositories/auth_repository.dart';
-import 'package:dynamic_dashboard/domain/entities/user.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 
