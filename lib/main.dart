@@ -18,10 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => getIt<AuthCubit>()),
-        BlocProvider(create: (context) => getIt<DashboardActionCubit>()),
-      ],
+      providers: [BlocProvider(create: (context) => getIt<AuthCubit>())],
       child: MaterialApp.router(
         title: 'Dynamic Dashboard',
         theme: ThemeData(
