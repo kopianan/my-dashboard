@@ -1,6 +1,5 @@
 import 'package:dynamic_dashboard/application/weather/weather_cubit.dart';
-import 'package:dynamic_dashboard/domain/entities/weather.dart';
-import 'package:dynamic_dashboard/injection.dart';
+import 'package:dynamic_dashboard/domain/entities/weather.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -117,8 +116,9 @@ class WeatherCard extends StatelessWidget {
   }
 
   Widget _buildLoadedState(Weather weather, BuildContext context) {
-    final temp = (weather.main.temp - 273.15)
-        .round(); // Convert from Kelvin to Celsius
+    final temp = (weather.main.temp.toStringAsFixed(2));
+    final feelsLike = (weather.main.feelsLike.toStringAsFixed(2));
+
     final weatherInfo = weather.weather.isNotEmpty ? weather.weather[0] : null;
     final description = weatherInfo?.description ?? 'Unknown';
 
@@ -168,7 +168,7 @@ class WeatherCard extends StatelessWidget {
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  '${(weather.main.feelsLike - 273.15).round()}°C',
+                  '$feelsLike°C',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

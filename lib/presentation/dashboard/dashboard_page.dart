@@ -29,14 +29,17 @@ class _DashboardPageState extends State<DashboardPage> {
     switch (cardType) {
       case 'weather':
         return WeatherCard(
-          key: PageStorageKey('weather_card'),
+          key: const PageStorageKey('weather_card'),
           weatherCubit: weatherCubit,
         );
       case 'news':
-        return NewsCard(key: PageStorageKey('news_card'), newsCubit: newsCubit);
+        return NewsCard(
+          key: const PageStorageKey('news_card'),
+          newsCubit: newsCubit,
+        );
       case 'stock':
         return StockPriceCard(
-          key: PageStorageKey('stock_card'),
+          key: const PageStorageKey('stock_card'),
           stockPriceCubit: stockCubit,
         );
       default:

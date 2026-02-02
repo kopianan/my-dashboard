@@ -6,7 +6,6 @@ part 'weahter_model.g.dart';
 
 @freezed
 abstract class WeatherModel with _$WeatherModel {
-
   const factory WeatherModel({
     required CoordModel coord,
     required List<WeatherInfoModel> weather,
@@ -35,7 +34,6 @@ abstract class WeatherModel with _$WeatherModel {
 
 @freezed
 abstract class CoordModel with _$CoordModel {
-
   const factory CoordModel({required double lon, required double lat}) =
       _CoordModel;
   const CoordModel._();
@@ -51,7 +49,6 @@ abstract class CoordModel with _$CoordModel {
 
 @freezed
 abstract class WeatherInfoModel with _$WeatherInfoModel {
-
   const factory WeatherInfoModel({
     required int id,
     required String main,
@@ -76,7 +73,6 @@ abstract class WeatherInfoModel with _$WeatherInfoModel {
 
 @freezed
 abstract class MainModel with _$MainModel {
-
   const factory MainModel({
     required double temp,
     @JsonKey(name: 'feels_like') required double feelsLike,
@@ -95,10 +91,10 @@ abstract class MainModel with _$MainModel {
   // Convert to domain entity
   WeatherMain toDomain() {
     return WeatherMain(
-      temp: temp,
-      feelsLike: feelsLike,
-      tempMin: tempMin,
-      tempMax: tempMax,
+      temp: temp - 273.15,
+      feelsLike: feelsLike - 273.15,
+      tempMin: tempMin - 273.15,
+      tempMax: tempMax - 273.15,
       pressure: pressure,
       humidity: humidity,
       seaLevel: seaLevel,

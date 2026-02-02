@@ -73,7 +73,7 @@ class StockPriceWebSocketDataSourceImpl
 
     try {
       final wsUrl = appConfig.finnhubWsUrlWithToken;
-      developer.log('Connecting to WebSocket: $wsUrl', name: 'StockPriceWS');
+      developer.log('Connecting to WebSocket', name: 'StockPriceWS');
 
       _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
 

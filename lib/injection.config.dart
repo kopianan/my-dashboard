@@ -48,6 +48,7 @@ import 'infrastructure/repositories/auth_repository_impl.dart' as _i933;
 import 'infrastructure/repositories/news_repository_impl.dart' as _i0;
 import 'infrastructure/repositories/stock_price_repository_impl.dart' as _i615;
 import 'infrastructure/repositories/weather_repository_impl.dart' as _i517;
+import 'infrastructure/services/location_service.dart' as _i73;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -67,17 +68,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i828.AppConfig>(() => _i828.AppConfig());
     gh.lazySingleton<_i519.Client>(() => httpModule.client);
+    gh.lazySingleton<_i73.LocationService>(() => _i73.LocationService());
     gh.factory<_i439.StockPriceWebSocketDataSource>(
       () => _i789.StockPriceWebSocketDataSourceImpl(gh<_i828.AppConfig>()),
     );
     gh.factory<_i822.NewsRemoteDataSource>(
       () => _i537.NewsRemoteDataSourceImpl(
-        gh<_i519.Client>(),
-        gh<_i828.AppConfig>(),
-      ),
-    );
-    gh.factory<_i887.WeatherRemoteDataSource>(
-      () => _i61.WeatherRemoteDataSourceImpl(
         gh<_i519.Client>(),
         gh<_i828.AppConfig>(),
       ),
@@ -90,6 +86,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i190.AuthLocalDataSource>(
       () => _i971.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i887.WeatherRemoteDataSource>(
+      () => _i61.WeatherRemoteDataSourceImpl(
+        gh<_i519.Client>(),
+        gh<_i828.AppConfig>(),
+        gh<_i73.LocationService>(),
+      ),
     );
     gh.factory<_i690.WeatherRepository>(
       () => _i517.WeatherRepositoryImpl(gh<_i887.WeatherRemoteDataSource>()),

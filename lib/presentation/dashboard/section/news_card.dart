@@ -1,6 +1,5 @@
 import 'package:dynamic_dashboard/application/news/news_cubit.dart';
-import 'package:dynamic_dashboard/domain/entities/news.dart';
-import 'package:dynamic_dashboard/injection.dart';
+import 'package:dynamic_dashboard/domain/entities/news.dart'; 
 import 'package:dynamic_dashboard/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
