@@ -10,6 +10,14 @@ A Flutter-based dynamic dashboard application that demonstrates clean architectu
 - **News Feed**: Latest news articles from reliable sources
 - **Customizable UI**: Drag-and-drop dashboard card reordering 
 
+## Demo Video
+
+Watch the application in action:
+
+[🎥 Dynamic Dashboard Demo Video](https://drive.google.com/file/d/1YwbOUdBiIEDe4gP6hC76Yaug6CiI4Rj2/view?usp=sharing)
+
+*Click the link above to view a comprehensive demonstration of the app's features and functionality.* 
+
 ## Architecture
 
 This project follows Clean Architecture principles with the following layers:
