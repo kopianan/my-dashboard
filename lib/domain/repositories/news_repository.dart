@@ -4,7 +4,7 @@ import 'package:dynamic_dashboard/domain/entities/news.dart';
 abstract class NewsRepository {
   /// Fetch top headlines for specified country
   Future<Either<String, NewsResponse>> getTopHeadlines({
-    String country = 'au',
+    required String country,
     int pageSize = 3,
   });
 }

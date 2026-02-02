@@ -6,13 +6,12 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: NewsRepository)
 class NewsRepositoryImpl implements NewsRepository {
-  
   NewsRepositoryImpl(this.remoteDataSource);
   final NewsRemoteDataSource remoteDataSource;
-  
+
   @override
   Future<Either<String, NewsResponse>> getTopHeadlines({
-    String country = 'au',
+    required String country,
     int pageSize = 3,
   }) async {
     try {
@@ -20,17 +19,19 @@ class NewsRepositoryImpl implements NewsRepository {
         country: country,
         pageSize: pageSize,
       );
-      
+
       // Check if the API response indicates success
       if (newsResponseModel.status != 'ok') {
-        return Left('News API returned error status: ${newsResponseModel.status}');
+        return Left(
+          'News API returned error status: ${newsResponseModel.status}',
+        );
       }
-      
+
       // Check if we have articles
       if (newsResponseModel.articles.isEmpty) {
         return const Left('No news articles found for the specified criteria');
       }
-      
+
       final newsResponse = newsResponseModel.toDomain();
       return Right(newsResponse);
     } on FormatException catch (e) {
@@ -39,11 +40,15 @@ class NewsRepositoryImpl implements NewsRepository {
       // Handle HTTP errors and other exceptions
       final errorMessage = e.toString();
       if (errorMessage.contains('Failed to fetch news: 401')) {
-        return const Left('Invalid API key. Please check your NewsAPI configuration.');
+        return const Left(
+          'Invalid API key. Please check your NewsAPI configuration.',
+        );
       } else if (errorMessage.contains('Failed to fetch news: 429')) {
         return const Left('API rate limit exceeded. Please try again later.');
       } else if (errorMessage.contains('Failed to fetch news: 400')) {
-        return const Left('Invalid request parameters. Please check country code and page size.');
+        return const Left(
+          'Invalid request parameters. Please check country code and page size.',
+        );
       } else if (errorMessage.contains('Failed to fetch news:')) {
         return const Left('Network error: Unable to fetch news data.');
       } else {

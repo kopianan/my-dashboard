@@ -8,6 +8,7 @@ import 'package:dynamic_dashboard/injection.dart';
 import 'package:dynamic_dashboard/presentation/dashboard/section/news_card.dart';
 import 'package:dynamic_dashboard/presentation/dashboard/section/stock_price_card.dart';
 import 'package:dynamic_dashboard/presentation/dashboard/section/weather_card.dart';
+import 'package:dynamic_dashboard/utils/pref_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -51,7 +52,7 @@ class _DashboardPageState extends State<DashboardPage> {
     final futures = <Future>[];
     futures.addAll([
       weatherCubit.getCurrentWeather(),
-      newsCubit.getTopHeadlines(),
+      newsCubit.getTopHeadlines(country: PrefConst.newsCountryId),
       stockCubit.startListening(),
     ]);
     await Future.wait(futures);

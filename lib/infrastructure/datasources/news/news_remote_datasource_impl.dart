@@ -12,10 +12,9 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
   final http.Client client;
   final AppConfig appConfig;
 
-
   @override
   Future<NewsResponseModel> getTopHeadlines({
-    String country = 'au',
+    required String country,
     int pageSize = 3,
   }) async {
     final url =

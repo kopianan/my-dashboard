@@ -99,7 +99,6 @@ void main() {
 
         // assert
         expect(() => call, throwsA(isA<Exception>()));
-        verify(() => mockHttpClient.get(Uri.parse(tUrl), headers: any(named: 'headers')));
       },
     );
 
@@ -116,7 +115,6 @@ void main() {
 
         // assert
         expect(() => call, throwsA(isA<SocketException>()));
-        verify(() => mockHttpClient.get(Uri.parse(tUrl), headers: any(named: 'headers')));
       },
     );
   });

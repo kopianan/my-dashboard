@@ -55,7 +55,7 @@ void main() {
           ).thenAnswer((_) async => Right(tNewsResponse));
           return newsCubit;
         },
-        act: (cubit) => cubit.getTopHeadlines(),
+        act: (cubit) => cubit.getTopHeadlines(country: 'us'),
         expect: () => [
           const NewsState.loading(),
           NewsState.loaded(tNewsResponse),
@@ -87,7 +87,7 @@ void main() {
         verify: (_) {
           verify(
             () =>
-                mockNewsRepository.getTopHeadlines(pageSize: 5),
+                mockNewsRepository.getTopHeadlines(country: 'au', pageSize: 5),
           );
         },
       );
@@ -103,7 +103,7 @@ void main() {
           ).thenAnswer((_) async => const Left('Failed to fetch news'));
           return newsCubit;
         },
-        act: (cubit) => cubit.getTopHeadlines(),
+        act: (cubit) => cubit.getTopHeadlines(country: 'us'),
         expect: () => [
           const NewsState.loading(),
           const NewsState.error('Failed to fetch news'),
@@ -127,7 +127,7 @@ void main() {
           ).thenThrow(Exception('Network error'));
           return newsCubit;
         },
-        act: (cubit) => cubit.getTopHeadlines(),
+        act: (cubit) => cubit.getTopHeadlines(country: 'us'),
         expect: () => [
           const NewsState.loading(),
           const NewsState.error('Exception: Network error'),

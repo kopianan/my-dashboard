@@ -64,10 +64,10 @@ void main() {
         WeatherInfo(id: 800, main: 'Clear', description: 'clear sky', icon: '01d')
       ],
       main: WeatherMain(
-        temp: 282.55,
-        feelsLike: 281.86,
-        tempMin: 280.37,
-        tempMax: 284.26,
+        temp: 9.400000000000034, // 282.55 - 273.15
+        feelsLike: 8.710000000000036, // 281.86 - 273.15
+        tempMin: 7.220000000000027, // 280.37 - 273.15
+        tempMax: 11.110000000000014, // 284.26 - 273.15
         pressure: 1023,
         humidity: 100,
         seaLevel: 1013,

@@ -9,22 +9,21 @@ part 'news_state.dart';
 
 @injectable
 class NewsCubit extends Cubit<NewsState> {
-  
   NewsCubit(this.newsRepository) : super(const NewsState.initial());
   final NewsRepository newsRepository;
-  
+
   Future<void> getTopHeadlines({
-    String country = 'us',
+    required String country,
     int pageSize = 2,
   }) async {
     emit(const NewsState.loading());
-    
+
     try {
       final result = await newsRepository.getTopHeadlines(
         country: country,
         pageSize: pageSize,
       );
-      
+
       result.fold(
         (error) => emit(NewsState.error(error)),
         (newsResponse) => emit(NewsState.loaded(newsResponse)),
