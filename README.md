@@ -108,7 +108,7 @@ For local data storage, I currently use SharedPreferences, as the data usage in 
 
 **Mock Strategy**: Injectable dependencies enable comprehensive mocking without complex setup.
  
-## AI Workflow
+## AI Workflow  
 
 This section documents the AI-assisted development process and prompts used to build this application, demonstrating systematic architectural thinking and iterative development.
 

@@ -80,6 +80,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
         child: Scaffold(
           appBar: AppBar(
+            foregroundColor: Colors.white,
             title: const Text('Dashboard'),
             backgroundColor: Colors.indigo,
             elevation: 0,
